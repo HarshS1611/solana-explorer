@@ -209,7 +209,11 @@ function MainSection() {
                         </div>
                     </div>
 
-                    <div
+                 
+
+            </div>
+            
+            <div
                         className="relative flex items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-lime-300"
                     >
                         <div
@@ -264,9 +268,6 @@ function MainSection() {
                             </div>
                         </div>
                     </div>
-
-            </div>
-
 
         </div >
     );
