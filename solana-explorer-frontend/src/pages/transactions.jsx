@@ -14,7 +14,7 @@ const AllTransactions = () => {
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button
                                 type="button"
-                                className="bg-white text-center w-20 rounded-xl h-10 relative font-sans text-black text-xl font-semibold group"
+                                className="bg-white text-center w-20 rounded-lg h-10 relative font-sans text-black text-xl font-semibold group"
                             >
                                 <div
                                     class="bg-sky-300 px-1 rounded-md h-8 w-max flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[90%] z-10 duration-500"
