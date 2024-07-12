@@ -2,23 +2,24 @@ import { useEffect, useState } from 'react'
 
 import axios from 'axios'
 import SearchComponent from '../components/searchBar'
+import MainSection from '../components/home/mainSection'
 
 export default function Home() {
-    const fetchTransactions = async () => {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/latest-blocks?limit=10`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    Authorization: `${import.meta.env.VITE_API_KEY}`
-                },
-            }
-        )
-        console.log(response.data)
-    }
-    useEffect(() => {
-        fetchTransactions()
-    }, []);
+    // const fetchTransactions = async () => {
+    //     const response = await axios.get(`${import.meta.env.VITE_API_URL}/latest-blocks?limit=10`,
+    //         {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Access-Control-Allow-Origin': '*',
+    //                 Authorization: `${import.meta.env.VITE_API_KEY}`
+    //             },
+    //         }
+    //     )
+    //     console.log(response.data)
+    // }
+    // useEffect(() => {
+    //     fetchTransactions()
+    // }, []);
     return (
         <div>
             <div className='flex justify-center w-full items-center mt-10'>
@@ -31,6 +32,9 @@ export default function Home() {
 
             </div>
             <h1 className='text-white'>Home</h1>
+            <div>
+                <MainSection/>
+            </div>
         </div>
     )
 }
