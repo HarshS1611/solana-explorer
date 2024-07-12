@@ -63,8 +63,8 @@ const Transactions = () => {
     }, [transactions]);
 
     return (
-        <>
-            <table class="table-auto overflow-auto shadow-xl bg-white rounded-lg text-black w-full ">
+        <div className='w-full bg-white p-4 bg-opacity-50 rounded-xl'>
+            <table class="table-auto overflow-auto shadow-xl bg-white  rounded-lg text-black w-full ">
                 <thead className="rounded-lg border-b-[1px] w-full">
                     <tr className="   w-full">
                         <th className="flex justify-start py-4 ml-5 text-sm">Latest Transactions</th>
@@ -84,8 +84,8 @@ const Transactions = () => {
                     {transactions && transactions.map((transact, index) => {
                         // console.log(transact)
                         return (
-                            <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-lg md:px-4">
-                                <td className="flex py-5 w-max items-center flex-row gap-2 justify-start ml-5">
+                            <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-md md:px-4">
+                                <td className="flex py-4 w-max items-center flex-row gap-2 justify-start ml-5">
                                     <div className='flex items-center border-[1px] h-5 bg-black rounded-full'>
                                         <FaExchangeAlt className=' h-5 w-5' />
                                     </div>
@@ -99,9 +99,9 @@ const Transactions = () => {
 
                                 </td>
                                 <td className='w-max h-max'>
-                                        <p className="flex gap-2 justify-center">
-                                            <div >{(transact.mostImportantInstruction.name).substring(0, 12)}</div>
-                                        </p>
+                                    <p className="flex gap-2 justify-center">
+                                        <div >{(transact.mostImportantInstruction.name).substring(0, 12)}</div>
+                                    </p>
                                 </td>
                                 <td className='flex w-max text-sky-600 cursor-pointer justify-end'>
                                     <p>   {(transact.blockNumber)}</p>
@@ -116,7 +116,7 @@ const Transactions = () => {
 
 
                 </tbody>
-            </table></>
+            </table></div>
     )
 }
 

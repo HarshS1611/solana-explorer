@@ -3,7 +3,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const Transactions = () => {
+const Blocks = () => {
 
     const [transactions, setTransactions] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,16 +31,16 @@ const Transactions = () => {
         }
         interval = seconds / 60;
         if (interval > 1) {
-            return Math.floor(interval) + " minutes ago";
+            return Math.floor(interval) + " mins ago";
         }
-        return Math.floor(seconds) + " seconds ago";
+        return Math.floor(seconds) + " secs ago";
     };
 
     const TransactionAPI = async (page) => {
 
         console.log(page)
 
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/latest-transactions?limit=${20 * page}`,
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/latest-blocks?limit=${20 * page}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,17 +62,19 @@ const Transactions = () => {
     console.log(transactions, currentPage)
     return (
         <>
+          
 
-<div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl'>
+            <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl'>
                 <table class=" table-auto bg-white rounded-t-xl text-black xl:w-full ">
                     <thead className="border-b-[1px] w-full">
                         <tr className="text-gray-400 w-fit">
-                            <th className="flex  py-2 w-fit justify-start  ml-5 ">Signature</th>
+                            <th className="flex  py-2 w-fit justify-start  ml-5 ">Block Hash</th>
                             <th className=""> Block</th>
 
-                            <th className=""> Validator</th>
+                            <th className=""> 	
+Leader</th>
 
-                            <th className=" ">Fee (in SOL)</th>
+                            <th className=" ">Reward (in SOL)</th>
 
                             <th className=""> Time</th>
 
@@ -82,31 +84,34 @@ const Transactions = () => {
                     <tbody>
                         {transactions && transactions.map((transact, index) => {
                             // console.log(transact)
-                            return (<tr key={index} className="border-b-[0.7px] text-xs md:text-sm lg:text-md xl:text-sm xl:mx-5 border-gray-400">
-                                <td className="flex w-fit gap-4 my-2 items-center ml-2">
-                                    <div className='flex  items-center border-[0.5px]  h-10 bg-black rounded-full'>
-                                        <FaExchangeAlt className='h-5 w-10 ' />
+                            return (
+                            <tr key={index} className="border-b-[0.7px] text-xs px-4 md:text-sm lg:text-sm xl:text-sm xl:mx-5 border-gray-400">
+                                <td className="flex w-fit gap-1 my-2 items-center ml-2">
+                                    <div className='flex  items-center border-[0.5px]  h-5 bg-black rounded-full'>
+                                        <FaExchangeAlt className='h-5 w-5 ' />
                                     </div>
-                                    <Link to={`/txns/${transact.transactionHash}`} className='cursor-pointer text-sky-600'>
+                                    <Link to={`/txns/${transact.blockhash}`} className='cursor-pointer text-sky-600'>
 
-                                        {(transact.transactionHash).substring(0, 30)}...{(transact.transactionHash).substring(70, transact.transactionHash.length)}
+                                        {(transact.blockhash)}
 
                                     </Link>
                                 </td>
                                 <td>
 
-                                    <Link to={`/blocks/${transact.blockNumber}`} className='cursor-pointer text-sky-600'>{transact.blockNumber}</Link>
+                                    <Link to={`/blocks/${transact.blocknumber}`} className='cursor-pointer text-sky-600'>{transact.blocknumber}</Link>
                                 </td>
                                 <td>
-                                    <Link to={`/address/${transact.accounts[0].account.address}`} className='cursor-pointer text-sky-600'>{(transact.accounts[0].account.address).substring(0, 10)}...{(transact.accounts[0].account.address).substring(30, transact.accounts[0].account.length)}</Link>
+                                    <Link to={`/address/${transact.proposer}`} className='cursor-pointer text-sky-600'>{(transact.proposer)}</Link>
                                 </td>
                                 <td>
-                                    <div className='text-xs'>{(transact.meta.fee / 1e9).toString().substring(0, 8)}</div>
+                                    <div className='text-xs'>{(transact.rewards[0].lamports / 1e9).toString().substring(0, 8)}</div>
                                 </td>
 
-                                <td>
-
-                                    <p>{timeAgo(transact.blocktime.absolute)}</p>
+                                <td className='text-xs mr-2'> 
+                                    {transact.blocktime.absolute.absolute ?
+                                        <p>{timeAgo(transact.blocktime.absolute.absolute)}</p>
+                                        : <p>{timeAgo(transact.blocktime.absolute)}</p>
+                                    }
                                 </td>
                             </tr>)
                         }
@@ -121,4 +126,4 @@ const Transactions = () => {
     )
 }
 
-export default Transactions;
+export default Blocks;

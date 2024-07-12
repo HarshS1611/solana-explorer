@@ -63,17 +63,17 @@ const Blocks = () => {
     }, [transactions]);
 
     return (
-        <>
+        <div className='w-full bg-white p-4 bg-opacity-50 rounded-xl'>
             <table class="table-auto overflow-auto shadow-xl bg-white rounded-lg text-black w-full ">
-                <thead className="rounded-lg border-b-[1px] w-full">
-                    <tr className="   w-full">
+                <thead className="rounded-lg border-b-[1px] text-md w-full">
+                    <tr className=" text-md  w-full">
                         <th className="flex justify-start py-4 ml-5  text-sm">Latest Blocks</th>
                         <th className='text-white'>e</th>
                         <th className='text-white'>ew</th>
                         <th className="py-2 text-sm"><Link className='text-sky-700' to={'/blocks'}>View All</Link></th>
 
                     </tr>
-                    <tr>
+                    <tr className='text-sm'>
                         <th className='w-40'>SLOT</th>
                         <th>VALIDATOR</th>
                         <th className='flex justify-end w-10'>TXS</th>
@@ -84,8 +84,8 @@ const Blocks = () => {
                     {transactions && transactions.map((transact, index) => {
                         console.log(transact)
                         return (
-                            <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-lg md:px-4">
-                                <td className="flex py-5 w-max items-center flex-row gap-2 justify-start ml-5">
+                            <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-md md:px-4">
+                                <td className="flex py-4 w-max items-center flex-row gap-2 justify-start ml-5">
                                     <div className='flex items-center border-[1px] h-5 bg-black rounded-full'>
                                         <FaExchangeAlt className=' h-5 w-5' />
                                     </div>
@@ -113,7 +113,10 @@ const Blocks = () => {
                                 </td>
                                 <td className='w-max '>
 
-                                    <p>{timeAgo(transact.blocktime.absolute)}</p>
+                                {transact.blocktime.absolute.absolute ?
+                                        <p>{timeAgo(transact.blocktime.absolute.absolute)}</p>
+                                        : <p>{timeAgo(transact.blocktime.absolute)}</p>
+                                    }
                                 </td>
                             </tr>)
                     }
@@ -121,7 +124,7 @@ const Blocks = () => {
 
 
                 </tbody>
-            </table></>
+            </table></div>
     )
 }
 

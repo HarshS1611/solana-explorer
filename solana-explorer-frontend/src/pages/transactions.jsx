@@ -1,9 +1,7 @@
 
-import Navbar from '../components/navbar';
 import SearchComponent from '../components/searchBar';
 import Transactions from '../components/transactions/transactions';
 import { Link } from 'react-router-dom';
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 const AllTransactions = () => {
     return (
