@@ -70,7 +70,7 @@ const Blocks = () => {
                         <th className="flex justify-start py-4 ml-5  text-sm">Latest Blocks</th>
                         <th className='text-white'>e</th>
                         <th className='text-white'>ew</th>
-                        <th className="py-2 text-sm"><Link className='text-sky-700' to={'/txns'}>View All</Link></th>
+                        <th className="py-2 text-sm"><Link className='text-sky-700' to={'/blocks'}>View All</Link></th>
 
                     </tr>
                     <tr>
