@@ -97,7 +97,7 @@ const TransactionDetails = () => {
                                 </div>
                                 <div className='grid grid-cols-2 w-full gap-4'>
                                     <div className="flex justify-between w-full text-sm">
-                                        <p>Timestamp</p><p>{transactionData.blocktime && transactionData.blocktime.absolute}</p>
+                                        <p>Timestamp</p><p>{transactionData.blocktime && timeAgo(transactionData.blocktime.absolute)}</p>
                                     </div>
                                     <div className="flex justify-between w-full text-sm pl-2 border-black border-s-[1px]">
                                         <p>Block</p><p>{transactionData.blockNumber}</p>
@@ -129,7 +129,7 @@ const TransactionDetails = () => {
                                     <td className='px-4 py-4'>
                                         {transactionData && transactionData.accounts ? transactionData.accounts.map((acc, indx) => {
                                             return (
-                                                <div className="flex items-center gap-2">
+                                                <div className="flex text-sm items-center gap-2">
                                                     <p>{acc.account.address}</p>
                                                 </div>
                                             )
@@ -139,7 +139,7 @@ const TransactionDetails = () => {
                                     <td>
                                         {transactionData && transactionData.meta && transactionData.meta.postBalances ? transactionData.meta.postBalances.slice(0, transactionData.accounts.length).map((acc, indx) => {
                                             return (
-                                                <div className="flex items-center gap-2">
+                                                <div className="flex text-sm items-center gap-2">
                                                     <p>{(acc / 1e9)} SOL</p>
                                                 </div>
                                             )
@@ -152,7 +152,7 @@ const TransactionDetails = () => {
                                                 setPayer(indx)
                                             }
                                             return (
-                                                <div className="flex  items-center gap-2">
+                                                <div className="flex text-sm items-center gap-2">
                                                     <p>{((acc - transactionData.meta.preBalances[indx]) / 1e9)} SOL</p>
                                                 </div>
                                             )
@@ -162,10 +162,10 @@ const TransactionDetails = () => {
                                     <td>
                                         {transactionData && transactionData.accounts ? transactionData.accounts.map((acc, indx) => {
                                             return (
-                                                <div className="flex justify-start items-center gap-2">
+                                                <div className="flex text-sm justify-start items-center gap-1">
                                                     <p className='text-white'>{indx}</p>
                                                     <p>{indx == payer && "Payer"}</p>
-                                                    <p>{!acc.writable && "Read Only"}</p>
+                                                    <p>{!acc.writable && "ReadOnly"}</p>
                                                     <p>{acc.program && "Program"}</p>
                                                     <p>{acc.signer && "Signer"}</p>
                                                 </div>
@@ -183,12 +183,14 @@ const TransactionDetails = () => {
                             {transactionData && transactionData.instructions ? transactionData.instructions.map((ins, indx) => {
                                 return (
                                     <div className="flex flex-col gap-5 w-full bg-white p-4 rounded-xl my-5">
-                                        <h1 className='flex justify-start text-2xl font-semibold'>{indx} Undecoded Instruction</h1>
+                                        <h1 className='flex justify-start text-2xl font-semibold'>0{indx + 1} Undecoded Instruction</h1>
                                         <div className="flex justify-between w-full text-sm">
                                             <p>Program	</p> <p>{ins.programId.name || ins.programId.address}</p>
                                         </div>
-                                        <div className="flex justify-between w-full text-sm">
-                                            <p>Data</p> <div className='flex flex-col bg-gray-100 p-2 rounded-md justify-start'>
+                                        {ins.raw && ins.raw.data && <div className="flex justify-between w-full text-sm">
+                                            <p>Data</p> 
+                                            <div className='flex flex-col bg-gray-100 p-2 rounded-md justify-start'>
+
                                                 <p >{(ins.raw.data).substring(0, 29)}</p>
                                                 <p>{(ins.raw.data).substring(29, 58)}</p>
                                                 <p>{(ins.raw.data).substring(58, 87)}</p>
@@ -199,12 +201,33 @@ const TransactionDetails = () => {
                                                 <p>{(ins.raw.data).substring(203, 232)}</p>
                                             </div>
                                         </div>
-                                        <div className="flex justify-between w-full text-sm">
-                                            <p>Program Id Index	</p> <p>{ins.raw.programIdIndex}</p>
-                                        </div>
-                                        <div className="flex justify-between w-full text-sm">
-                                            <p>Stack Height	</p> <p>{ins.raw.stackHeight ? ins.raw.stackHeight : "null"}</p>
-                                        </div>
+                                        }
+                                        {ins.parsed && ins.parsed.CreateAssociatedTokenAccount && <div className="flex justify-between w-full text-sm">
+                                            <p>Associated Token Account</p> <p>{ins.parsed.CreateAssociatedTokenAccount.associatedTokenAccount.address}</p>
+                                        </div>}
+                                        {ins.parsed && ins.parsed.CreateAssociatedTokenAccount && <div className="flex justify-between w-full text-sm">
+                                            <p>Funding Account</p> <p>{ins.parsed.CreateAssociatedTokenAccount.fundingAccount.address}</p>
+                                        </div>}
+                                        {ins.parsed && ins.parsed.CreateAssociatedTokenAccount && <div className="flex justify-between w-full text-sm">
+                                            <p>Wallet Account</p> <p>{ins.parsed.CreateAssociatedTokenAccount.walletAccount.address}</p>
+                                        </div>}
+                                        {ins.parsed && ins.parsed.CreateAssociatedTokenAccount && <div className="flex justify-between w-full text-sm">
+                                            <p>System Program</p> <p>{ins.parsed.CreateAssociatedTokenAccount.systemProgram.name}</p>
+                                        </div>}
+                                        {ins.parsed && ins.parsed.CloseAccount && <div className="flex justify-between w-full text-sm">
+                                            <p>Destination Account</p> <p>{ins.parsed.CloseAccount.destinationAccount.address}</p>
+                                        </div>}
+                                        {ins.parsed && ins.parsed.CloseAccount && <div className="flex justify-between w-full text-sm">
+                                            <p> Account</p> <p>{ins.parsed.CloseAccount.account.address}</p>
+                                        </div>}
+
+                                        {ins.raw && ins.raw.data && <div className="flex justify-between w-full text-sm">
+                                            <p>Program Id Index	</p> <p>{ins.raw && ins.raw.programIdIndex && ins.raw.programIdIndex}</p>
+                                        </div>}
+
+                                        {ins.raw && ins.raw.data && <div className="flex justify-between w-full text-sm">
+                                            <p>Stack Height	</p> <p>{ins.raw && ins.raw.stackHeight ? ins.raw.stackHeight : "null"}</p>
+                                        </div>}
                                     </div>
                                 )
                             }) : <>Loading..</>

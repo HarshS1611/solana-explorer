@@ -90,7 +90,7 @@ const Blocks = () => {
                                         <FaExchangeAlt className=' h-5 w-5' />
                                     </div>
                                     <div className='flex justify-start '>
-                                        <Link to={`/transactions/${transact.blocknumber}`} className="flex justify-start cursor-pointer text-sky-600">
+                                        <Link to={`/blocks/${transact.blocknumber}`} className="flex justify-start cursor-pointer text-sky-600">
 
                                             {transact.blocknumber}
                                         </Link>
