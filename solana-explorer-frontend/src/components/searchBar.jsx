@@ -164,12 +164,12 @@ function SearchComponent() {
                                     </Link></>)
                                     : (<>{searchType === 'address' ? (<Link to={`/address/${searchResult.address}`} className='flex overflow-hidden items-center p-2 md:p-4 gap-2 text-xs md:text-md lg:text-lg md:gap-5'><MdAccountBalanceWallet /> <p>{searchResult.address}</p><div className='flex items-center'>
                                         <IoIosReturnLeft className='font-bold h-6 w-6' />
-                                    </div></Link>) : (<Link to={`/txns/${searchResult.hash}`} className="flex py-5 flex-row gap-6 justify-start mx-5">
+                                    </div></Link>) : (<Link to={`/transactions/${searchResult.hash}`} className="flex py-5 flex-row gap-6 justify-start mx-5">
                                         <div className='flex items-center border-[1px] h-10 bg-black rounded-full'>
                                             <FaExchangeAlt className=' h-5 w-10 ' />
                                         </div>
                                         <div>
-                                            <Link to={`/txns/${searchResult.hash}`} className="flex justify-start hover:underline">
+                                            <Link to={`/transactions/${searchResult.hash}`} className="flex justify-start hover:underline">
 
                                                 {searchResult && searchResult.hash && searchResult.hash.length > 0 && (searchResult.hash || "Loading").substring(0, 7)}...{(searchResult.hash || "Loading").substring(60, searchResult.hash && searchResult.hash.length)}                                        </Link>
                                             <p className='text-xs'>{new Date(searchResult.timestamp * 1000).toLocaleString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', timeZone: 'Asia/Kolkata' })}</p>

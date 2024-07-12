@@ -87,7 +87,7 @@ const Transactions = () => {
                                     <div className='flex  items-center border-[0.5px]  h-10 bg-black rounded-full'>
                                         <FaExchangeAlt className='h-5 w-10 ' />
                                     </div>
-                                    <Link to={`/txns/${transact.transactionHash}`} className='cursor-pointer text-sky-600'>
+                                    <Link to={`/transactions/${transact.transactionHash}`} className='cursor-pointer text-sky-600'>
 
                                         {(transact.transactionHash).substring(0, 30)}...{(transact.transactionHash).substring(70, transact.transactionHash.length)}
 

@@ -90,10 +90,10 @@ const Transactions = () => {
                                         <FaExchangeAlt className=' h-5 w-5' />
                                     </div>
                                     <div className='flex justify-start'>
-                                        <div className="flex justify-start cursor-pointer text-sky-600">
+                                        <Link to={`/transactions/${transact.transactionHash}`} className="flex justify-start cursor-pointer text-sky-600">
 
                                             {(transact.transactionHash).substring(0, 4)}...{(transact.transactionHash).substring(84, transact.transactionHash.length)}
-                                        </div>
+                                        </Link>
 
                                     </div>
 

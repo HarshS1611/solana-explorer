@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Blocks = () => {
 
-    const [transactions, setTransactions] = useState([]);
+    const [blocks, setBlocks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
 
@@ -36,7 +36,7 @@ const Blocks = () => {
         return Math.floor(seconds) + " secs ago";
     };
 
-    const TransactionAPI = async (page) => {
+    const BlockAPI = async (page) => {
 
         console.log(page)
 
@@ -49,17 +49,17 @@ const Blocks = () => {
                 },
             }
         )
-        setTransactions(response.data)
+        setBlocks(response.data)
 
     }
 
     useEffect(() => {
 
-       TransactionAPI(currentPage);
+        BlockAPI(currentPage);
         
     }, [ currentPage]);
 
-    console.log(transactions, currentPage)
+    console.log(blocks, currentPage)
     return (
         <>
           
@@ -82,15 +82,15 @@ Leader</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {transactions && transactions.map((transact, index) => {
+                        {blocks && blocks.map((transact, index) => {
                             // console.log(transact)
                             return (
                             <tr key={index} className="border-b-[0.7px] text-xs px-4 md:text-sm lg:text-sm xl:text-sm xl:mx-5 border-gray-400">
-                                <td className="flex w-fit gap-1 my-2 items-center ml-2">
+                                <td className="flex w-fit gap-1 my-4 items-center ml-2">
                                     <div className='flex  items-center border-[0.5px]  h-5 bg-black rounded-full'>
                                         <FaExchangeAlt className='h-5 w-5 ' />
                                     </div>
-                                    <Link to={`/txns/${transact.blockhash}`} className='cursor-pointer text-sky-600'>
+                                    <Link to={`/transactions/${transact.blockhash}`} className='cursor-pointer text-sky-600'>
 
                                         {(transact.blockhash)}
 
