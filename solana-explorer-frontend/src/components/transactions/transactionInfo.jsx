@@ -4,12 +4,14 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { FaArrowDown } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import '../../styles/transaction.css';
 
 const TransactionDetails = () => {
 
 
     const [transactionData, setTransactionData] = useState([]);
     const { id } = useParams();
+    const [payer, setPayer] = useState(0)
 
     const timeAgo = (timestamp) => {
         const seconds = Math.floor((new Date() - new Date(timestamp * 1000)) / 1000);
@@ -54,60 +56,183 @@ const TransactionDetails = () => {
 
     }
 
+
     useEffect(() => {
 
         TransactionAPI();
-
-
     }, []);
+
     return (
         <>
-            {/* <div className='text-white overflow-hidden  flex flex-col gap-5 justify-start w-full'>
-                <div className='flex gap-5'>
-                    <p className='flex justify-start text-lg md:text-4xl font-bold'>Transaction </p>
-                    <p className='flex items-center  px-4 text-md bg-green-600 rounded-full'>Success</p>
-                </div>
-                <p className='flex justify-start text-xs md:text-lg text-gray-400'> {transactions && transactions.hash && (transactions.hash)}</p>
-                <div className='py-5 '>
-                    <div className='flex flex-col bg-gray-800  justify-start rounded-xl py-2 px-5 border-black shadow-lg text-white'>
-                        <div className='flex justify-between border-gray-600 border-b-[1px]'>
-                            <div className='text-lg py-2 font-semibold'>Transaction Details </div>
-                            <div className='text-sm py-1'> {timeAgo(transactions.timestamp)}
-                                ∙ {new Date(transactions.timestamp * 1000).toLocaleString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', timeZone: 'Asia/Kolkata' })}
-                            </div>
-                        </div>
-                        <div className='my-5 overflow-auto border-b-[1px] border-gray-600'>
-                            <div className='flex py-4 justify-start gap-2 md:gap-6'>From <Link to={`/address/${transactions.from}`}>{transactions.from}</Link></div>
-                            <div className=''><FaArrowDown /></div>
-                            <div className='flex py-4 justify-start gap-4 md:gap-10'>To <Link to={`/address/${transactions.from}`}>{transactions.to}</Link></div>
+            <div>
+                <div className=''>
+                    <div className=" mb-10 tab-container w-max">
+                        <input type="radio" name="tab" id="tab1" className="tab tab--1" />
+                        <label className="tab_label" for="tab1">Summary</label>
 
-                        </div>
-                        <div className='border-b-[1px] border-gray-600'>
-                            <div className='flex py-4 justify-start gap-10'> RON Transferred <p>{(parseFloat(transactions.value, 16) / 1e18)} RON</p> </div>
-                        </div>
-                        <details className='relative flex justify-start py-4 border-gray-600 border-b-[1px]'>
-                            <summary className='flex justify-start items-center gap-2'>Advance Details <IoIosArrowDown className='text-white' /></summary>
-                            <div className='border-[1px] rounded-xl border-gray-600 my-5 p-5'>
-                                <div className='flex py-4 justify-start gap-16'>Block : <p>{transactions.block_number}</p></div>
-                                <div className='flex py-4 justify-start gap-10'>Gas Price : <p>{transactions.gas_price} GWEI</p></div>
-                                <div className='flex py-4 justify-start gap-16'>Nonce : <p>{transactions.nonce}</p></div>
-                                <div className='flex py-4 justify-start gap-20'>Fee : <p>Free</p></div>
-                                <div className='flex py-4 justify-start gap-8'>Gas Used : <p>{transactions.gas_used}</p></div>
+                        <input type="radio" name="tab" id="tab2" className="tab tab--2" />
+                        <label className="tab_label" for="tab2">Accounts</label>
 
-                            </div>
-                        </details>
-                        <div className='py-5'>
-                            <div className='flex justify-start'>Logs</div>
-                            <div className='flex flex-col gap-5 border-[1px] border-gray-600 rounded-lg my-5 p-5 overflow-x-auto text-sm xl:text-md'>{transactions && transactions.logs && transactions.logs.map((log, idx) => (
-                                <div className='flex flex-col  justify-start' key={idx}>
-                                    <div className='flex justify-start'>Address : {log.address}</div>
-                                    <div className='flex lg:gap-4'> Topics: <div className='flex flex-col'>{log.topics.map((t, i) => (<div key={i} className='flex'>{i} : {t}</div>))}</div></div>
+                        <input type="radio" name="tab" id="tab3" className="tab tab--3" />
+                        <label className="tab_label" for="tab3">Instructions</label>
+                        <input type="radio" name="tab" id="tab4" className="tab tab--4" />
+                        <label className="tab_label" for="tab4">Logs</label>
+
+                        <div className="indicator"></div>
+                    </div>
+
+                    <div
+                        className="relative flex flex-col gap-5 items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
+                    >
+
+                        {transactionData ? (
+                            <div className='flex flex-col gap-5 w-full' >
+                                <div className="flex justify-between w-full text-sm">
+                                    <p>Transaction Hash</p> <p>{transactionData.transactionHash}</p>
+
                                 </div>
-                            ))}</div>
+
+                                <div className="flex justify-between w-full text-sm">
+                                    <p>Recent BlockHash</p> <p>{transactionData.recentBlockhash}</p>
+                                </div>
+                                <div className='grid grid-cols-2 w-full gap-4'>
+                                    <div className="flex justify-between w-full text-sm">
+                                        <p>Timestamp</p><p>{transactionData.blocktime && transactionData.blocktime.absolute}</p>
+                                    </div>
+                                    <div className="flex justify-between w-full text-sm pl-2 border-black border-s-[1px]">
+                                        <p>Block</p><p>{transactionData.blockNumber}</p>
+                                    </div>
+                                    <div className="flex justify-between w-full text-sm">
+                                        <p>Status</p><p>{transactionData.valid ? "Success" : "Failed"}</p>
+                                    </div>
+                                    <div className="flex justify-between w-full text-sm border-black border-s-[1px] pl-2">
+                                        <p>Fee</p><p>{transactionData.meta && transactionData.meta.fee / 1e9} SOL</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : <>Loading..</>}
+                    </div>
+
+                    <div>
+                        <table className="table-auto bg-white rounded-xl w-full mt-10 ">
+                            <thead>
+                                <tr className='border-b-[1px]'>
+                                    <th className="px-4 py-2">ACCOUNT INPUTS
+                                    </th>
+                                    <th className="flex justify-start px-4 py-2">POST BALANCE (SOL)	</th>
+                                    <th className="px-4 py-2">CHANGE  (SOL)</th>
+                                    <th className="px-4 py-2">DETAILS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className='ml-4 border-b-[1px]'>
+                                    <td className='px-4 py-4'>
+                                        {transactionData && transactionData.accounts ? transactionData.accounts.map((acc, indx) => {
+                                            return (
+                                                <div className="flex items-center gap-2">
+                                                    <p>{acc.account.address}</p>
+                                                </div>
+                                            )
+                                        }) : <>Loading..</>}
+
+                                    </td>
+                                    <td>
+                                        {transactionData && transactionData.meta && transactionData.meta.postBalances ? transactionData.meta.postBalances.slice(0, transactionData.accounts.length).map((acc, indx) => {
+                                            return (
+                                                <div className="flex items-center gap-2">
+                                                    <p>{(acc / 1e9)} SOL</p>
+                                                </div>
+                                            )
+
+                                        }) : <>Loading..</>}
+                                    </td>
+                                    <td>
+                                        {transactionData && transactionData.meta && transactionData.meta.preBalances && transactionData.meta.postBalances ? transactionData.meta.postBalances.slice(0, transactionData.accounts.length).map((acc, indx) => {
+                                            if ((acc - transactionData.meta.preBalances[indx]) > 0) {
+                                                setPayer(indx)
+                                            }
+                                            return (
+                                                <div className="flex  items-center gap-2">
+                                                    <p>{((acc - transactionData.meta.preBalances[indx]) / 1e9)} SOL</p>
+                                                </div>
+                                            )
+
+                                        }) : <>Loading..</>}
+                                    </td>
+                                    <td>
+                                        {transactionData && transactionData.accounts ? transactionData.accounts.map((acc, indx) => {
+                                            return (
+                                                <div className="flex justify-start items-center gap-2">
+                                                    <p className='text-white'>{indx}</p>
+                                                    <p>{indx == payer && "Payer"}</p>
+                                                    <p>{!acc.writable && "Read Only"}</p>
+                                                    <p>{acc.program && "Program"}</p>
+                                                    <p>{acc.signer && "Signer"}</p>
+                                                </div>
+                                            )
+                                        }) : <>Loading..</>}
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <div >
+                            {transactionData && transactionData.instructions ? transactionData.instructions.map((ins, indx) => {
+                                return (
+                                    <div className="flex flex-col gap-5 w-full bg-white p-4 rounded-xl my-5">
+                                        <h1 className='flex justify-start text-2xl font-semibold'>{indx} Undecoded Instruction</h1>
+                                        <div className="flex justify-between w-full text-sm">
+                                            <p>Program	</p> <p>{ins.programId.name || ins.programId.address}</p>
+                                        </div>
+                                        <div className="flex justify-between w-full text-sm">
+                                            <p>Data</p> <div className='flex flex-col bg-gray-100 p-2 rounded-md justify-start'>
+                                                <p >{(ins.raw.data).substring(0, 29)}</p>
+                                                <p>{(ins.raw.data).substring(29, 58)}</p>
+                                                <p>{(ins.raw.data).substring(58, 87)}</p>
+                                                <p>{(ins.raw.data).substring(87, 116)}</p>
+                                                <p>{(ins.raw.data).substring(116, 145)}</p>
+                                                <p>{(ins.raw.data).substring(145, 174)}</p>
+                                                <p>{(ins.raw.data).substring(174, 203)}</p>
+                                                <p>{(ins.raw.data).substring(203, 232)}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between w-full text-sm">
+                                            <p>Program Id Index	</p> <p>{ins.raw.programIdIndex}</p>
+                                        </div>
+                                        <div className="flex justify-between w-full text-sm">
+                                            <p>Stack Height	</p> <p>{ins.raw.stackHeight ? ins.raw.stackHeight : "null"}</p>
+                                        </div>
+                                    </div>
+                                )
+                            }) : <>Loading..</>
+
+                            }
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className='flex flex-col gap-5 w-full bg-white p-4 rounded-xl my-5'>
+                            <h1 className='flex justify-start text-2xl font-semibold'>Program Logs</h1>
+                            <div className="flex flex-col justify-start items-center p-2 w-full text-sm bg-gray-100 rounded-xl">
+
+                                {transactionData && transactionData.meta ? transactionData.meta.logMessages.map((ins, indx) => {
+                                    return (
+                                        <div className="flex text-xs justify-start w-full">
+                                            {ins}
+                                        </div>
+
+                                    )
+                                }) : <>Loading..</>
+
+                                }                                    </div>
+
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
 
         </>
     )

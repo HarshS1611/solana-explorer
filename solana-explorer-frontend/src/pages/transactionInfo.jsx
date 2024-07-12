@@ -47,7 +47,7 @@ const TransactionInfo = () => {
 
                 </div>
 
-                <div className='flex  flex-col gap-10 py-8 xl:py-10'>
+                <div className='flex  flex-col gap-10'>
                     <TransactionDetails/>
                 </div>
             </div>
