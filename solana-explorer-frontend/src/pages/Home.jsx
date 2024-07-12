@@ -4,6 +4,7 @@ import axios from 'axios'
 import SearchComponent from '../components/searchBar'
 import MainSection from '../components/home/mainSection'
 import Transactions from '../components/home/transactions'
+import Blocks from '../components/home/blocks'
 
 export default function Home() {
     const fetchTransactions = async () => {
@@ -36,9 +37,10 @@ export default function Home() {
             <div>
                 <MainSection/>
             </div>
-            <div className='flex gap-10'>
+            <div className='flex gap-10 mt-10'>
+            <Blocks/>
                 <Transactions/>
-                <Transactions/>
+                
             </div>
         </div>
     )
