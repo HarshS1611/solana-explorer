@@ -13,9 +13,8 @@ const AccountDetails = () => {
     const [generalInfo, setGeneralInfo] = useState(null);
     const [transactionData, setTransactionData] = useState([]);
     const { id } = useParams();
-    const [totalShares, setTotalShares] = useState(0)
     const [currentPage, setCurrentPage] = useState(10)
-    const [totalPages, setTotalPages] = useState(0)
+    const [stakeRewards, setStakeRewards] = useState([])
     const [totalToken, setTotalToken] = useState(0)
     const [selectedTab, setSelectedTab] = useState(1)
 
@@ -60,14 +59,6 @@ const AccountDetails = () => {
         console.log(response.data, currentPage)
         setAccountData(response.data)
 
-        // const total = response.data.validator.delegatingStakeAccounts.reduce((acc, item) => acc + item.data.stake.delegation.stake, 0)
-        // // console.log(total)
-        // setTotalShares(total)
-
-        // const totalPages = Math.ceil(response.data.validator.delegatingStakeAccounts.length / 10)
-        // setTotalPages(totalPages)
-        // console.log(totalPages)
-
         const generalInfo = await axios.get(`https://public-api.solanabeach.io/v1/account/${id}/tokens`,
             {
                 headers: {
@@ -79,6 +70,20 @@ const AccountDetails = () => {
         )
         console.log(generalInfo.data)
         setGeneralInfo(generalInfo.data)
+
+        if(response.data.type === 'stake'){
+            const stake = await axios.get(`https://public-api.solanabeach.io/v1/account/${id}/stake-rewards`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    Authorization: `${import.meta.env.VITE_API_KEY}`
+                },
+            }
+        )
+        console.log(stake.data)
+        setStakeRewards(stake.data)
+        }
 
         const tokenTotal = generalInfo.data.reduce((acc, item) => acc + item.price, 0)
         console.log(tokenTotal)
@@ -194,7 +199,7 @@ const AccountDetails = () => {
 
 
 
-                    <div className='overflow-auto bg-white p-4 bg-opacity-50 w-max rounded-xl mt-10'>
+                    <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl mt-10'>
                         <div className=" mb-10 tab-container w-max">
                             <input onClick={() => setSelectedTab(1)} type="radio" name="tab" id="tab1" className="tab tab--1" />
                             <label className="tab_label" for="tab1">Transactions</label>
@@ -224,7 +229,7 @@ const AccountDetails = () => {
                                     return (
                                         <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
                                             <td className="px-4 py-2">
-                                                {(txn.transactionHash).substring(0, 20)}...{(txn.transactionHash).substring(64, txn.transactionHash.length)}
+                                                {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
                                             </td>
                                             <td className="grid grid-cols-3 py-4 text-xs justify-center items-center w-max gap-2">
                                                 {txn.instructions && txn.instructions.map((ins, id) => {
@@ -243,7 +248,7 @@ const AccountDetails = () => {
                         </table>}
 
                         {selectedTab === 2 && accountData.type === 'vote' &&
-                            <table className="table-auto bg-white rounded-xl mt-10 ">
+                            <table className="table-auto w-full bg-white rounded-xl mt-10 ">
                                 <thead>
                                     <tr className='grid grid-cols-2 border-b-[1px]'>
                                         <th className="flex justify-start px-4 py-2">SLOT
@@ -261,6 +266,46 @@ const AccountDetails = () => {
 
                                                 <td className="flex justify-start px-4 py-2">{txn.slot}</td>
                                                 <td className="flex justify-start px-4 py-2">{txn.confirmation_count}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>}
+
+                            {selectedTab === 2 && accountData.type === 'stake' &&
+                            <table className="table-auto w-full bg-white rounded-xl mt-10 ">
+                                <thead>
+                                    <tr className='grid grid-cols-7 border-b-[1px]'>
+                                        <th className="flex justify-start px-4 py-2">EPOCH
+                                        </th>
+                                        <th className="flex justify-start px-4 py-2">REWARD SLOT	
+                                        </th>
+                                        <th className="flex justify-start px-4 py-2">AMOUNT
+                                        </th>
+                                        <th className="flex justify-start px-4 py-2">NEW BALANCE	
+                                        </th>
+                                        <th className="flex justify-start px-2 py-2">PERCENT CHANGE	
+                                        </th>
+                                        <th className="flex justify-start px-4 py-2">APR	
+                                        </th>
+                                        <th className="flex justify-start px-4 py-2">TIMESTAMP	
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {stakeRewards && stakeRewards.map((txn, index) => {
+                                        return (
+                                            <tr key={index} className='grid grid-cols-7 ml-4 text-xs py-2 border-b-[1px] w-full'>
+
+                                                <td className="flex justify-start px-2 py-2">{txn.epoch}</td>
+                                                <td className="flex justify-start px-2 py-2">{txn.effectiveSlot}</td>
+                                                <td className="flex justify-start px-2 py-2">{txn.amount/1e9} SOL</td>
+                                                <td className="flex justify-start px-2 py-2">{txn.postBalance/1e9} SOL</td>
+                                                <td className="flex justify-center px-2 py-2">{(txn.percentChange*100).toString().substring(0,4)} %</td>
+                                                <td className="flex justify-start px-2 py-2">{(txn.apr.toString().substring(0,4))} %</td>
+                                                <td className="flex justify-start px-2 py-2">{timeAgo(txn.timestamp)}</td>
                                             </tr>
                                         )
                                     })}
