@@ -100,12 +100,12 @@ const Blocks = () => {
                                 </td>
                                 <td className='w-max'>
                                     <div>
-                                        <p className="flex md:block gap-2 justify-start text-sky-600 ">
-                                            <p className='cursor-pointer'>
+                                        <div className="flex md:block gap-2 justify-start text-sky-600 ">
+                                            <Link to={`/validator/${transact.proposer}`} className='cursor-pointer'>
                                             {(transact.proposer).substring(0, 4)}...{(transact.proposer).substring(40, transact.proposer.length)}
 
-                                                </p>
-                                        </p>
+                                                </Link>
+                                        </div>
                                     </div>
                                 </td>
                                 <td className='flex w-max justify-end'>

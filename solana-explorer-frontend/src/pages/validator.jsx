@@ -1,7 +1,7 @@
 
 import SearchComponent from '../components/searchBar';
-import Transactions from '../components/transactions/transactions';
 import { Link } from 'react-router-dom';
+import Validators from '../components/validators/validators';
 
 const AllValidators = () => {
     return (
@@ -48,7 +48,7 @@ const AllValidators = () => {
                 </div>
 
                 <div className='flex  flex-col gap-10 py-8 xl:py-10'>
-                    <Transactions />
+                   <Validators/>
                 </div>
             </div>
         </div>

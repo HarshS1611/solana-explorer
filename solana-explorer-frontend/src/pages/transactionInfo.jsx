@@ -1,6 +1,6 @@
 
 import SearchComponent from '../components/searchBar';
-import TransactionDetails from '../components/transactions/transactionInfo';
+import TransactionDetails from '../components/transactions/transactionDetails';
 import { Link } from 'react-router-dom';
 
 const TransactionInfo = () => {
