@@ -8,7 +8,6 @@ const Validators = () => {
     const [validators, setValidators] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [generalInfo, setGeneralInfo] = useState(null);
-    const [totalStake, setTotalStake] = useState(0)
 
 
     const timeAgo = (timestamp) => {
@@ -66,8 +65,6 @@ const Validators = () => {
         console.log(generalInfo.data)
         setGeneralInfo(generalInfo.data)
 
-        const totalStake = response.data.map((validator) => validator.activatedStake).reduce((a, b) => a + b, 0)
-        setTotalStake(totalStake)
 
     }
 
@@ -126,7 +123,7 @@ const Validators = () => {
                                         <div className='flex  items-center border-[0.5px]  h-10  rounded-full'>
                                             {transact.pictureURL ? <img src={transact.pictureURL} className='h-10 w-10 rounded-full' /> : <p className='flex items-center text-md font-bold justify-center h-10 w-10 rounded-full'>{transact.moniker[0]}</p>}
                                         </div>
-                                        <Link to={`/validator/${transact.moniker}`} className='cursor-pointer text-sm text-sky-600'>
+                                        <Link to={`/validator/${transact.votePubkey}`} className='cursor-pointer text-sm text-sky-600'>
 
                                             {transact.moniker ? transact.moniker : (transact.votePubkey).substring(0, 10)}...{(transact.votePubkey).substring(35, transact.votePubkey.length)}
 
@@ -137,7 +134,7 @@ const Validators = () => {
                                         <div lassName='cursor-pointer text-xs text-sky-600'>{transact.activatedStake} ({transact.delegatorCount})</div>
                                     </td>
                                     <td>
-                                        <div className=''>{(transact.activatedStake / totalStake * 100).toString().substring(0, 4)} %</div>
+                                        <div className=''>{transact.activatedStake && generalInfo && (transact.activatedStake / generalInfo.activatedStake * 100).toString().substring(0, 4)} %</div>
                                     </td>
                                     <td>
                                         <div className='text-xs'>{(transact.commission)}</div>
