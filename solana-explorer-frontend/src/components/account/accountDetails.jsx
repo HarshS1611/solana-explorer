@@ -6,16 +6,17 @@ import { FaArrowDown } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import '../../styles/transaction.css';
 
-const ValidatorDetails = () => {
+const AccountDetails = () => {
 
 
-    const [validatorData, setValidatorData] = useState([]);
+    const [accountData, setAccountData] = useState([]);
     const [generalInfo, setGeneralInfo] = useState(null);
     const [transactionData, setTransactionData] = useState([]);
     const { id } = useParams();
     const [totalShares, setTotalShares] = useState(0)
     const [currentPage, setCurrentPage] = useState(10)
     const [totalPages, setTotalPages] = useState(0)
+    const [totalToken, setTotalToken] = useState(0)
 
     const timeAgo = (timestamp) => {
         const seconds = Math.floor((new Date() - new Date(timestamp * 1000)) / 1000);
@@ -44,9 +45,9 @@ const ValidatorDetails = () => {
         return Math.floor(seconds) + " secs ago";
     };
 
-    const BlockAPI = async () => {
+    const AccountAPI = async () => {
 
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/validator/${id}`,
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/account/${id}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,17 +57,17 @@ const ValidatorDetails = () => {
             }
         )
         console.log(response.data, currentPage)
-        setValidatorData(response.data)
+        setAccountData(response.data)
 
-        const total = response.data.validator.delegatingStakeAccounts.reduce((acc, item) => acc + item.data.stake.delegation.stake, 0)
-        // console.log(total)
-        setTotalShares(total)
+        // const total = response.data.validator.delegatingStakeAccounts.reduce((acc, item) => acc + item.data.stake.delegation.stake, 0)
+        // // console.log(total)
+        // setTotalShares(total)
 
-        const totalPages = Math.ceil(response.data.validator.delegatingStakeAccounts.length / 10)
-        setTotalPages(totalPages)
-        console.log(totalPages)
+        // const totalPages = Math.ceil(response.data.validator.delegatingStakeAccounts.length / 10)
+        // setTotalPages(totalPages)
+        // console.log(totalPages)
 
-        const generalInfo = await axios.get(`https://public-api.solanabeach.io/v1/general-info?`,
+        const generalInfo = await axios.get(`https://public-api.solanabeach.io/v1/account/${id}/tokens`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,28 +76,33 @@ const ValidatorDetails = () => {
                 },
             }
         )
-        // console.log(generalInfo.data)
+        console.log(generalInfo.data)
         setGeneralInfo(generalInfo.data)
 
+        const tokenTotal = generalInfo.data.reduce((acc, item) => acc + item.price, 0)
+        console.log(tokenTotal)
+        setTotalToken(tokenTotal)
 
-        // const blockTxns = await axios.get(`${import.meta.env.VITE_API_URL}/block-transactions/${id}?offet=0&limit=10`,
-        //     {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Access-Control-Allow-Origin': '*',
-        //             Authorization: `${import.meta.env.VITE_API_KEY}`
-        //         },
-        //     }
-        // )
-        // console.log(blockTxns.data)
-        // setTransactionData(blockTxns.data)
+
+
+        const blockTxns = await axios.get(`${import.meta.env.VITE_API_URL}/account/${id}/transactions`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    Authorization: `${import.meta.env.VITE_API_KEY}`
+                },
+            }
+        )
+        console.log(blockTxns.data)
+        setTransactionData(blockTxns.data)
 
     }
 
 
     useEffect(() => {
 
-        BlockAPI();
+        AccountAPI();
     }, []);
 
     return (
@@ -108,42 +114,30 @@ const ValidatorDetails = () => {
                         className="relative flex flex-col gap-5 items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
                     >
 
-                        {validatorData && validatorData.validator ? (
+                        {accountData && accountData.value ? (
                             <div className='flex flex-col gap-5 w-full' >
-                                <div className="flex justify-start items-center gap-4 w-full text-xl">
-                                    <div className='flex  items-center border-[0.5px]  h-10  rounded-full'>
-                                        {validatorData.validator.pictureURL ? <img src={validatorData.validator.pictureURL} className='h-10 w-10 rounded-full' /> : <p className='flex items-center text-md font-bold justify-center h-10 w-10 p-2 rounded-full'>{validatorData.validator.moniker}</p>}
+                                <div className="flex justify-between w-full text-sm">
+                                    <p>Address</p> <p>{accountData.value.base.address.address}</p>
+
+                                </div>
+
+                                <div className="flex justify-between w-full text-sm">
+                                    <p>Owner Program</p> <p>{accountData.value.base.owner.name}</p>
+                                </div>
+                                <div className='grid grid-cols-2 w-full gap-4'>
+                                    <div className="flex justify-between w-full text-sm">
+                                        <p>Balance</p><p>{(accountData.value.base.balance)}</p>
                                     </div>
-                                    <div className=''>
-
-                                        <Link to={`/account/${validatorData.validator.votePubkey}`} className='flex justify-start cursor-pointer'>
-                                            {validatorData.validator.moniker ? validatorData.validator.moniker :
-
-                                                <p>{(validatorData.validator.votePubkey).substring(0, 10)}...{(validatorData.validator.votePubkey).substring(35, validatorData.validator.votePubkey.length)}</p>}
-                                        </Link>
-                                        <p className='flex justify-start text-xs'>Vote Key: {validatorData.validator.votePubkey}</p>
-                                        <p className='flex justify-start text-xs'>Identity: {validatorData.validator.nodePubkey}</p>
+                                    <div className="flex justify-between w-full text-sm pl-2 border-black border-s-[1px]">
+                                        <p>Account Type</p><p>{accountData.type}</p>
+                                    </div>
+                                    <div className="flex justify-between w-full text-sm">
+                                        <p>Token Balance</p><p>${totalToken} ({generalInfo.length} Tokens)</p>
+                                    </div>
+                                    <div className="flex justify-between w-full text-sm border-black border-s-[1px] pl-2">
+                                        <p>Rent Exempt Reserve</p><p>{accountData.value.base.rentExemptReserve}</p>
                                     </div>
                                 </div>
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Website</p> <a className='text-blue-500' href={validatorData.validator.website} target='blank' >{validatorData.validator.website}</a>
-
-                                </div>
-
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Commission</p> <p>{validatorData.validator.commission} %</p>
-                                </div>
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Slot success rate</p><p> {validatorData.validator.blockProduction && Math.ceil((validatorData.validator.blockProduction.leaderSlots - validatorData.validator.blockProduction.skippedSlots) / validatorData.validator.blockProduction.leaderSlots * 100)} %</p>
-                                </div>
-
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Stake</p> <p>{validatorData.validator.activatedStake && generalInfo && (validatorData.validator.activatedStake / generalInfo.activatedStake * 100).toString().substring(0, 4)} % ({Math.floor(validatorData.validator.activatedStake / 1e9)}) SOL</p>
-                                </div>
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>ASN</p><p >{validatorData.validator.asn.organization}</p>
-                                </div>
-
                             </div>
                         ) : <>Loading..</>}
                     </div>
@@ -151,7 +145,7 @@ const ValidatorDetails = () => {
 
 
 
-                    <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl mt-10'>
+                    {/* <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl mt-10'>
                         <table className="table-auto bg-white rounded-t-xl w-full  ">
                             <thead>
                                 <tr className='border-b-[1px]'>
@@ -190,7 +184,7 @@ const ValidatorDetails = () => {
                             }
                         </div>
 
-                    </div>
+                    </div> */}
 
 
                 </div>
@@ -200,4 +194,4 @@ const ValidatorDetails = () => {
     )
 }
 
-export default ValidatorDetails;
+export default AccountDetails;

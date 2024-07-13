@@ -8,6 +8,7 @@ import TransactionInfo from './pages/transactionInfo';
 import BlockInfo from './pages/blockInfo';
 import AllValidators from './pages/validator';
 import ValidatorInfo from './pages/validatorInfo';
+import AccountInfo from './pages/accountInfo';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/blocks/:id" element={<BlockInfo />} />
           <Route path="/validators" element={<AllValidators/>} />
           <Route path="/validator/:id" element={<ValidatorInfo/>} />
+          <Route path="/account/:id" element={<AccountInfo/>} />
 
         </Routes>
       </div></BrowserRouter>
