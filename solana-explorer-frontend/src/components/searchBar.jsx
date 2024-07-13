@@ -64,6 +64,7 @@ function SearchComponent() {
                 console.log('Unknown search type');
                 return;
         }
+        console.log(config.url)
 
         axios(config)
             .then((response) => {
@@ -80,10 +81,12 @@ function SearchComponent() {
                         }
                     ).then((response) => {
                         setSearchResult(response.data);
+                        console.log(response.data);
                     }
                     )
                 } else {
                     setSearchResult(response.data);
+                    console.log(response.data);
 
                 }
             })
@@ -91,7 +94,6 @@ function SearchComponent() {
                 console.log(error);
             });
 
-        console.log(searchResult)
     }
 
     const handleSearchChange = (e) => {
@@ -119,7 +121,7 @@ function SearchComponent() {
                     <div class="flex">
 
 
-                        <div class="relative w-full">
+                        <div class="relative w-full bg-white p-2 rounded-xl bg-opacity-50">
 
                             <input type="text" id="default-search"
                                 className="block rounded-2xl w-full p-4 text-xs lg:text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-gray-500 focus:border-gray-500 focus:outline-none  "
@@ -131,7 +133,7 @@ function SearchComponent() {
                                 }}
                                 required />
 
-                            <div className="flex items-center bg-pink-300 text-gray-800 absolute end-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-2 py-2">
+                            <div className="flex items-center bg-pink-300 text-gray-800 absolute right-5 bottom-5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-2 py-2">
                                 <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
@@ -140,47 +142,57 @@ function SearchComponent() {
                         </div>
 
                     </div>
-                    {searchQuery && <div>{searchResult ? (
-                        <div className="flex  w-full text-black mt-2 bg-white  rounded-md shadow">
-                            <div className='flex justify-start bg-white rounded-md'>
-                                <div className='flex w-full overflow-hidden'>{searchType === 'block' ? (<>
-                                    <Link to={`/blocks/${searchResult.number}`} className="flex py-2 overflow-hidden md:py-5 flex-row gap-2 md:gap-4 justify-start mx-5">
-                                        <div className='flex items-center border-[1px] h-10 bg-black rounded-full'>
-                                            <BsBox className=' h-5 w-10 ' />
-                                        </div>
-                                        <div>
-                                            <Link to={`/blocks/${searchResult.number}`} className="flex justify-start hover:underline">
+                    {searchQuery && <div className='z-30'
+                    >{searchResult ? (
+                        <>
+                            {searchType === 'address' && (
+                                <a href={`/account/${searchResult.value.base.address.address}`} className="flex items-center cursor-pointer hover:bg-gray-100 justify-between px-4 z-30 w-full text-black mt-2 bg-white  rounded-md shadow">
 
-                                                #{searchResult.number}
-                                            </Link>
-                                            <p className='text-xs'>{new Date(searchResult.timestamp * 1000).toLocaleString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', timeZone: 'Asia/Kolkata' })}</p>
+                                    <div className='flex justify-start  w-full  hover:bg-gray-100 py-5 bg-white rounded-md'>
+                                        <div className='flex  gap-2 text-gray-500 text-sm'>
+                                            <p className=' w-full'>Account </p>
+                                            <p className='font-bold '>{searchResult.value.base.address.address}</p>
+                                        </div></div><IoIosReturnLeft className='h-5 w-5' />
+                                </a>)}
+                            {searchType === 'transaction' && (
+                                <Link to={`/transactions/${searchResult.transactionHash}`} className="flex items-center cursor-pointer hover:bg-gray-100 justify-between px-4 z-30 w-full text-black mt-2 bg-white  rounded-md shadow">
+
+                                    <div className='flex justify-start  w-full  hover:bg-gray-100 py-5 bg-white rounded-md'>
+                                        <div className='flex  gap-2 text-gray-500 text-sm'>
+                                            <p className=' w-full'>Transaction</p>
+                                            <p className='font-bold '>{(searchResult.transactionHash).substring(0,60)}</p>
+                                        </div></div><IoIosReturnLeft className='h-5 w-5' />
+                                </Link>)}
+                            {searchType === 'block' && (
+                                <Link to={`/blocks/${searchResult.blocknumber}`} className="flex items-center cursor-pointer hover:bg-gray-100 justify-between px-4 z-30 w-full text-black mt-2 bg-white  rounded-md shadow">
+
+                                    <div className='flex justify-start  w-full  hover:bg-gray-100 py-5 bg-white rounded-md'>
+                                        <div className='flex  gap-4 text-gray-500 text-sm'>
+                                            <p className=' w-full'>Block</p>
+                                            <p className='font-bold '>#{searchResult.blocknumber}</p>
+                                        </div></div><IoIosReturnLeft className='h-5 w-5' />
+                                </Link>)
+                            }
+                            {searchType === 'validator' && (
+                                <Link to={`/validator/${searchResult.validator.votePubkey}`} className="flex items-center cursor-pointer hover:bg-gray-100 justify-between px-4 z-30 w-full text-black mt-2 bg-white  rounded-md shadow">
+
+                                    <div className='flex justify-start  w-full  hover:bg-gray-100 py-5 bg-white rounded-md'>
+                                        <div className='flex  gap-2 text-gray-500 text-sm'>
+                                            <p className=' w-full'>Validator</p>
+                                            <p className='font-bold '>{searchResult.validator.votePubkey}</p>
+                                        </div></div><IoIosReturnLeft className='h-5 w-5' />
+                                </Link>)}
+
+                        </>
 
 
-                                        </div>
-                                        <div className='flex items-center'>
-                                            <IoIosReturnLeft className='font-bold h-6 w-6' />
-                                        </div>
 
-                                    </Link></>)
-                                    : (<>{searchType === 'address' ? (<Link to={`/address/${searchResult.address}`} className='flex overflow-hidden items-center p-2 md:p-4 gap-2 text-xs md:text-md lg:text-lg md:gap-5'><MdAccountBalanceWallet /> <p>{searchResult.address}</p><div className='flex items-center'>
-                                        <IoIosReturnLeft className='font-bold h-6 w-6' />
-                                    </div></Link>) : (<Link to={`/transactions/${searchResult.hash}`} className="flex py-5 flex-row gap-6 justify-start mx-5">
-                                        <div className='flex items-center border-[1px] h-10 bg-black rounded-full'>
-                                            <FaExchangeAlt className=' h-5 w-10 ' />
-                                        </div>
-                                        <div>
-                                            <Link to={`/transactions/${searchResult.hash}`} className="flex justify-start hover:underline">
 
-                                                {searchResult && searchResult.hash && searchResult.hash.length > 0 && (searchResult.hash || "Loading").substring(0, 7)}...{(searchResult.hash || "Loading").substring(60, searchResult.hash && searchResult.hash.length)}                                        </Link>
-                                            <p className='text-xs'>{new Date(searchResult.timestamp * 1000).toLocaleString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', timeZone: 'Asia/Kolkata' })}</p>
-
-                                        </div>
-                                        <div className='flex items-center'>
-                                            <IoIosReturnLeft className='font-bold h-6 w-6' />
-                                        </div>
-                                    </Link>)}</>)}</div></div>
+                    ) : (<div className="flex  w-full text-black mt-2 bg-white  rounded-md shadow">
+                        <div className='flex justify-start px-4 py-2 bg-white rounded-md'>
+                            Loading...
                         </div>
-                    ) : (<div className='flex justify-start'>Loading...</div>)}</div>}
+                    </div>)}</div>}
                 </form>
 
 

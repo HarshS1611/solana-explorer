@@ -126,22 +126,22 @@ const ValidatorDetails = () => {
                                     </div>
                                 </div>
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Website</p> <a className='text-blue-500' href={validatorData.validator.website} target='blank' >{validatorData.validator.website}</a>
+                                {validatorData.validator.website &&  <><p>Website</p> <a className='text-blue-500' href={validatorData.validator.website} target='blank' >{validatorData.validator.website }</a></>}   
 
                                 </div>
 
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Commission</p> <p>{validatorData.validator.commission} %</p>
+                                    <p>Commission</p> <p className='font-black text-purple-950'>{validatorData.validator.commission} %</p>
                                 </div>
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Slot success rate</p><p> {validatorData.validator.blockProduction && Math.ceil((validatorData.validator.blockProduction.leaderSlots - validatorData.validator.blockProduction.skippedSlots) / validatorData.validator.blockProduction.leaderSlots * 100)} %</p>
+                                    <p>Slot success rate</p><p className='font-black text-purple-950'> {validatorData.validator.blockProduction && Math.ceil((validatorData.validator.blockProduction.leaderSlots - validatorData.validator.blockProduction.skippedSlots) / validatorData.validator.blockProduction.leaderSlots * 100)} %</p>
                                 </div>
 
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Stake</p> <p>{validatorData.validator.activatedStake && generalInfo && (validatorData.validator.activatedStake / generalInfo.activatedStake * 100).toString().substring(0, 4)} % ({Math.floor(validatorData.validator.activatedStake / 1e9)}) SOL</p>
+                                    <p>Stake</p> <p className='font-black text-purple-950'>{validatorData.validator.activatedStake && generalInfo && (validatorData.validator.activatedStake / generalInfo.activatedStake * 100).toString().substring(0, 4)} % ({Math.floor(validatorData.validator.activatedStake / 1e9)}) SOL</p>
                                 </div>
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>ASN</p><p >{validatorData.validator.asn.organization}</p>
+                                    <p>ASN</p><p className='font-black text-purple-950'>{validatorData.validator.asn.organization}</p>
                                 </div>
 
                             </div>
@@ -155,7 +155,7 @@ const ValidatorDetails = () => {
                         <table className="table-auto bg-white rounded-t-xl w-full  ">
                             <thead>
                                 <tr className='border-b-[1px]'>
-                                    <th className="px-4 py-2">STAKE ACCOUNT
+                                    <th className="text-start px-10 py-2">STAKE ACCOUNT
                                     </th>
                                     <th className="flex justify-center px-4 py-2">ACTIVATION EPOCH	</th>
                                     <th className="px-4 py-2">AMOUNT</th>
@@ -167,8 +167,11 @@ const ValidatorDetails = () => {
                                 {validatorData.validator && validatorData.validator.delegatingStakeAccounts && validatorData.validator.delegatingStakeAccounts.slice(currentPage - 10, currentPage).map((txn, index) => {
                                     return (
                                         <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
-                                            <td className="px-4 py-2">
-                                                {(txn.pubkey)}
+                                            <td className="px-6 py-2">
+                                            <Link to={`/account/${txn.pubkey}`} className="flex text-sm items-center gap-2 cursor-pointer text-blue-400">
+                                                    <p>{(txn.pubkey)}</p>
+                                                </Link>
+                                                
                                             </td>
 
                                             <td className="px-4 py-2">{txn.data.stake.delegation.activation_epoch}</td>

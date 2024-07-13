@@ -38,7 +38,7 @@ const Blocks = () => {
 
     const BlockAPI = async (page) => {
 
-        console.log(page)
+        // console.log(page)
 
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/latest-blocks?limit=${20 * page}`,
             {
@@ -59,7 +59,7 @@ const Blocks = () => {
         
     }, [ currentPage]);
 
-    console.log(blocks, currentPage)
+    // console.log(blocks, currentPage)
     return (
         <>
           
@@ -72,7 +72,7 @@ const Blocks = () => {
                             <th className=""> Block</th>
 
                             <th className=""> 	
-Leader</th>
+                            Validator</th>
 
                             <th className=" ">Reward (in SOL)</th>
 
@@ -101,7 +101,7 @@ Leader</th>
                                     <Link to={`/blocks/${transact.blocknumber}`} className='cursor-pointer text-sky-600'>{transact.blocknumber}</Link>
                                 </td>
                                 <td>
-                                    <Link to={`/address/${transact.proposer}`} className='cursor-pointer text-sky-600'>{(transact.proposer)}</Link>
+                                    <Link to={`/validator/${transact.proposer}`} className='cursor-pointer text-sky-600'>{(transact.proposer)}</Link>
                                 </td>
                                 <td>
                                     <div className='text-xs'>{(transact.rewards[0].lamports / 1e9).toString().substring(0, 8)}</div>

@@ -82,7 +82,6 @@ const Blocks = () => {
                 </thead>
                 <tbody>
                     {transactions && transactions.map((transact, index) => {
-                        console.log(transact)
                         return (
                             <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-md md:px-4">
                                 <td className="flex py-4 w-max items-center flex-row gap-2 justify-start ml-5">

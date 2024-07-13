@@ -52,6 +52,7 @@ const BlockDetails = () => {
                 },
             }
         )
+        console.log(response.data)
         setBlockData(response.data)
 
         const blockTxns = await axios.get(`${import.meta.env.VITE_API_URL}/block-transactions/${id}?offet=0&limit=10`,
@@ -97,7 +98,7 @@ const BlockDetails = () => {
                                     <p>Previous BlockHash</p> <p>{blockData.previousblockhash}</p>
                                 </div>
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Proposer</p><p >{blockData.proposerData ? (<div className='flex items-center gap-2'><img className='w-5 h-5' src={blockData.proposerData.image} /> {blockData.proposerData.name}</div>) : blockData.proposer}</p>
+                                    <p>Proposer</p><p >{blockData.proposerData && blockData.proposerData.name ? (<div className='flex items-center gap-2'><img className='w-5 h-5' src={blockData.proposerData.image} alt={blockData.proposer} /> {blockData.proposerData.name}</div>) : blockData.proposer}</p>
                                 </div>
 
                             </div>
@@ -179,8 +180,10 @@ const BlockDetails = () => {
                                     {transactionData.data && transactionData.data.map((txn, index) => {
                                         return (
                                             <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
-                                                <td className="px-4 py-2">                                           
-                                                 {(txn.transactionHash).substring(0, 4)}...{(txn.transactionHash).substring(84, txn.transactionHash.length)}
+                                                <td className="px-4 py-2">  
+                                                <Link className='cursor-pointer text-blue-500' to={`/transactions/${txn.transactionHash}`}>                                         
+                                                 {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
+                                                </Link>
                                                 </td>
                                                 <td className="grid grid-cols-3 py-4 text-xs justify-center items-center w-max gap-2">
                                                     {txn.instructions && txn.instructions.map((ins,id)=>{

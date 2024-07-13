@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { MdOutlineAttachMoney } from "react-icons/md";
-import { CiGlobe } from "react-icons/ci";
-import { AiOutlineTransaction } from "react-icons/ai";
-import { FaTachometerAlt } from "react-icons/fa";
-import { GrDocumentVerified } from "react-icons/gr";
-import { MdCurrencyExchange } from "react-icons/md";
+import { Chart } from "react-google-charts";
+import '../../styles/transaction.css'
 
 import axios from 'axios';
 
 function MainSection() {
 
     const [generalInfo, setGeneralInfo] = useState(null);
-
-
+    const [volumeData, setVolumeData] = useState([]);
+    const [volumeOptions, setVolumeOptions] = useState({});
+    const [priceData, setPriceData] = useState([]);
+    const [priceOptions, setPriceOptions] = useState({});
+    const [selectedTab, setSelectedTab] = useState(1)
 
     const GetInfo = async () => {
 
@@ -26,248 +25,169 @@ function MainSection() {
                 },
             }
         )
-        console.log(generalInfo.data)
         setGeneralInfo(generalInfo.data)
+
+        const response = await axios.get(`https://public-api.solanabeach.io/v1/market-chart-data?`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    Authorization: `${import.meta.env.VITE_API_KEY}`
+                },
+            }
+        )
+
+        const volData = response.data.map(item => {
+
+            return [new Date(item.timestamp).toLocaleString("en-US",
+                {
+                    month: "short",
+                    day: "2-digit",
+                }), item.volume_24h];
+        });
+
+        const final = [["Time", "Txn Vol"], ...volData];
+        setVolumeData(final);
+
+
+        setVolumeOptions({
+            chart: {
+                title: "Transaction Volume (24h)",
+            },
+        });
+
+        const pData = response.data.map(item => {
+            return [new Date(item.timestamp).toLocaleString("en-US",
+                {
+                    month: "short",
+                    day: "2-digit",
+                }), item.price];
+        });
+
+        const finalPrice = [["Time", "Price $"], ...pData];
+        setPriceData(finalPrice);
+
+        setPriceOptions({
+            chart: {
+                title: "Solana Price (24h)",
+            },
+        });
 
     }
 
+
     useEffect(() => {
-        if (!generalInfo) {
-            GetInfo();
-        }
-    }, [generalInfo]);
+        GetInfo();
+
+    }, []);
+
 
 
     return (
         <div className="flex flex-col gap-4 text-white">
             <div className='grid grid-cols-3 gap-10'>
-                    <div
-                        className="relative flex items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-lime-300"
-                    >
-                        <div
-                            className="group absolute top-5 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[1.5em] border-[1px] border-[#ffffffaa] bg-[rgba(107,33,168,0.24)] backdrop-blur-[6px] duration-[500ms] hover:h-[10em] hover:top-1/2 hover:left-1/2 hover:w-[16em] hover:rounded-[1.5em]"
-                        >
-                            <svg
-                                className="h-10 w-10 duration-300 group-hover:opacity-0"
-                                viewBox="0 0 48 48"
-                                fill="none"
-                                height="10"
-                                width="10"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <g clip-path="url(#a)">
-                                    <path
-                                        clip-rule="evenodd"
-                                        d="M21.6 36h4.8V21.6h-4.8V36ZM24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0Zm0 43.2C13.44 43.2 4.8 34.56 4.8 24 4.8 13.44 13.44 4.8 24 4.8c10.56 0 19.2 8.64 19.2 19.2 0 10.56-8.64 19.2-19.2 19.2Zm-2.4-26.4h4.8V12h-4.8v4.8Z"
-                                        fill-rule="evenodd"
-                                        fill="#fff"
-                                    ></path>
-                                </g>
-                                <defs>
-                                    <clipPath id="a">
-                                        <path d="M0 0h48v48H0z" fill="#fff"></path>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            <div
-                                className="items-left duration-600 absolute left-0 top-0 flex h-[10em] w-[16em] translate-y-[100%] flex-col justify-between p-[1.5em] font-nunito text-[hsl(0,0%,85%)] group-hover:translate-y-0"
-                            >
-                                <div className="items-left flex flex-col justify-center">
-                                    <h1 className="text-[1.5em] font-bold leading-[0.8em]">Heading</h1>
-                                    <p className="text-sm ">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
-                                        magni repudiandae tenetur odio
-                                    </p>
-                                </div>
+                <div
+                    className="relative text-md flex flex-col items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
+                >
 
-                                <p className="cursor-pointer text-[0.7em] underline">learn more</p>
-                            </div>
+                    <h1 >
+                        Total Stake (SOL)
+                    </h1>
+                    <p className='text-2xl font-nunito text-md font-black text-purple-950'>{generalInfo && generalInfo.activatedStake}</p>
+                    <div className='flex gap-4 text-sm mt-5'>
+                        <div>
+                            <p>Current Stake</p> <p className='text-purple-950 font-semibold'>{generalInfo && generalInfo.delinquentStake}</p>
                         </div>
-                        <h1 className="text-center font-nunito text-md font-black text-purple-950">
+                        <div>
+                            <p>Delinquent Stake</p> <p className='text-purple-950 font-semibold'>{generalInfo && (generalInfo.activatedStake - generalInfo.delinquentStake)}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    className="relative flex flex-col text-md gap-2 items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
+                >
+
+                    <h1 className="flex justify-start">
+                        Total Transactions
+                    </h1>
+                    <p className='text-2xl font-nunito text-md font-black text-purple-950'>{generalInfo && generalInfo.totalSupply}</p>
+                    <div className='flex gap-5'>
+                        <div  >
+                            <h1 >
+                                Current Epoch
+                            </h1>
+                            <p className='text-3xl font-nunito font-black text-purple-950 '>{generalInfo && generalInfo.epoch}</p>
+                        </div>
+                        <div>
+                            <div className='text-md'>
+                                <p>Average TPS</p> <p className='text-3xl font-nunito text-md font-black text-purple-950'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    className="relative flex flex-col gap-4 text-md text-black items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-2"
+                >
+                    <div className='flex flex-col -mt-5 gap-2'>
+                        <h1 className="">
                             SOL Supply
                         </h1>
-                        <p>{generalInfo && generalInfo.totalSupply}</p>
+                        <p className='text-center font-nunito text-2xl font-black text-purple-950'>{generalInfo && generalInfo.totalSupply}</p>
+                    </div>
+                    <div className='flex gap-2 text-xs'>
                         <div>
-                            <div>
-                                <p>Circulating Supply</p> <p>{generalInfo && generalInfo.circulatingSupply }  {generalInfo && Math.round(generalInfo.circulatingSupply/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                            <div>
-                                <p>Non-circulating Supply</p> <p>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} {generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply)/generalInfo.totalSupply * 100)}</p>
-                            </div>
+                            <p>Circulating Supply</p> <p className='text-purple-950 font-semibold'>{generalInfo && generalInfo.circulatingSupply}  {generalInfo && Math.round(generalInfo.circulatingSupply / generalInfo.totalSupply * 100)}</p>
+                        </div>
+                        <div>
+                            <p>Non-circulating Supply</p> <p className='text-purple-950 font-semibold'>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} {generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply) / generalInfo.totalSupply * 100)}</p>
                         </div>
                     </div>
 
-                    <div
-                        className="relative flex items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-lime-300"
-                    >
-                        <div
-                            className="group absolute top-5 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[1.5em] border-[1px] border-[#ffffffaa] bg-[rgba(107,33,168,0.24)] backdrop-blur-[6px] duration-[500ms] hover:h-[10em] hover:top-1/2 hover:left-1/2 hover:w-[16em] hover:rounded-[1.5em]"
-                        >
-                            <svg
-                                className="h-10 w-10 duration-300 group-hover:opacity-0"
-                                viewBox="0 0 48 48"
-                                fill="none"
-                                height="10"
-                                width="10"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <g clip-path="url(#a)">
-                                    <path
-                                        clip-rule="evenodd"
-                                        d="M21.6 36h4.8V21.6h-4.8V36ZM24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0Zm0 43.2C13.44 43.2 4.8 34.56 4.8 24 4.8 13.44 13.44 4.8 24 4.8c10.56 0 19.2 8.64 19.2 19.2 0 10.56-8.64 19.2-19.2 19.2Zm-2.4-26.4h4.8V12h-4.8v4.8Z"
-                                        fill-rule="evenodd"
-                                        fill="#fff"
-                                    ></path>
-                                </g>
-                                <defs>
-                                    <clipPath id="a">
-                                        <path d="M0 0h48v48H0z" fill="#fff"></path>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            <div
-                                className="items-left duration-600 absolute left-0 top-0 flex h-[10em] w-[16em] translate-y-[100%] flex-col justify-between p-[1.5em] font-nunito text-[hsl(0,0%,85%)] group-hover:translate-y-0"
-                            >
-                                <div className="items-left flex flex-col justify-center">
-                                    <h1 className="text-[1.5em] font-bold leading-[0.8em]">Heading</h1>
-                                    <p className="text-sm ">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
-                                        magni repudiandae tenetur odio
-                                    </p>
-                                </div>
+                </div>
 
-                                <p className="cursor-pointer text-[0.7em] underline">learn more</p>
-                            </div>
-                        </div>
-                        <h1 className="text-center font-nunito text-md font-black text-purple-950">
-                            SOL Supply
-                        </h1>
-                        <p>{generalInfo && generalInfo.totalSupply}</p>
-                        <div>
-                            <div>
-                                <p>Circulating Supply</p> <p>{generalInfo && generalInfo.circulatingSupply }  {generalInfo && Math.round(generalInfo.circulatingSupply/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                            <div>
-                                <p>Non-circulating Supply</p> <p>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} {generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply)/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div
-                        className="relative flex items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-lime-300"
-                    >
-                        <div
-                            className="group absolute top-5 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[1.5em] border-[1px] border-[#ffffffaa] bg-[rgba(107,33,168,0.24)] backdrop-blur-[6px] duration-[500ms] hover:h-[10em] hover:top-1/2 hover:left-1/2 hover:w-[16em] hover:rounded-[1.5em]"
-                        >
-                            <svg
-                                className="h-10 w-10 duration-300 group-hover:opacity-0"
-                                viewBox="0 0 48 48"
-                                fill="none"
-                                height="10"
-                                width="10"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <g clip-path="url(#a)">
-                                    <path
-                                        clip-rule="evenodd"
-                                        d="M21.6 36h4.8V21.6h-4.8V36ZM24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0Zm0 43.2C13.44 43.2 4.8 34.56 4.8 24 4.8 13.44 13.44 4.8 24 4.8c10.56 0 19.2 8.64 19.2 19.2 0 10.56-8.64 19.2-19.2 19.2Zm-2.4-26.4h4.8V12h-4.8v4.8Z"
-                                        fill-rule="evenodd"
-                                        fill="#fff"
-                                    ></path>
-                                </g>
-                                <defs>
-                                    <clipPath id="a">
-                                        <path d="M0 0h48v48H0z" fill="#fff"></path>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            <div
-                                className="items-left duration-600 absolute left-0 top-0 flex h-[10em] w-[16em] translate-y-[100%] flex-col justify-between p-[1.5em] font-nunito text-[hsl(0,0%,85%)] group-hover:translate-y-0"
-                            >
-                                <div className="items-left flex flex-col justify-center">
-                                    <h1 className="text-[1.5em] font-bold leading-[0.8em]">Heading</h1>
-                                    <p className="text-sm ">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
-                                        magni repudiandae tenetur odio
-                                    </p>
-                                </div>
-
-                                <p className="cursor-pointer text-[0.7em] underline">learn more</p>
-                            </div>
-                        </div>
-                        <h1 className="text-center font-nunito text-md font-black text-purple-950">
-                            SOL Supply
-                        </h1>
-                        <p>{generalInfo && generalInfo.totalSupply}</p>
-                        <div>
-                            <div>
-                                <p>Circulating Supply</p> <p>{generalInfo && generalInfo.circulatingSupply }  {generalInfo && Math.round(generalInfo.circulatingSupply/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                            <div>
-                                <p>Non-circulating Supply</p> <p>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} {generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply)/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                 
 
             </div>
-            
-            <div
-                        className="relative flex items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-lime-300"
-                    >
-                        <div
-                            className="group absolute top-5 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-[1.5em] border-[1px] border-[#ffffffaa] bg-[rgba(107,33,168,0.24)] backdrop-blur-[6px] duration-[500ms] hover:h-[10em] hover:top-1/2 hover:left-1/2 hover:w-[16em] hover:rounded-[1.5em]"
-                        >
-                            <svg
-                                className="h-10 w-10 duration-300 group-hover:opacity-0"
-                                viewBox="0 0 48 48"
-                                fill="none"
-                                height="10"
-                                width="10"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <g clip-path="url(#a)">
-                                    <path
-                                        clip-rule="evenodd"
-                                        d="M21.6 36h4.8V21.6h-4.8V36ZM24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0Zm0 43.2C13.44 43.2 4.8 34.56 4.8 24 4.8 13.44 13.44 4.8 24 4.8c10.56 0 19.2 8.64 19.2 19.2 0 10.56-8.64 19.2-19.2 19.2Zm-2.4-26.4h4.8V12h-4.8v4.8Z"
-                                        fill-rule="evenodd"
-                                        fill="#fff"
-                                    ></path>
-                                </g>
-                                <defs>
-                                    <clipPath id="a">
-                                        <path d="M0 0h48v48H0z" fill="#fff"></path>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            <div
-                                className="items-left duration-600 absolute left-0 top-0 flex h-[10em] w-[16em] translate-y-[100%] flex-col justify-between p-[1.5em] font-nunito text-[hsl(0,0%,85%)] group-hover:translate-y-0"
-                            >
-                                <div className="items-left flex flex-col justify-center">
-                                    <h1 className="text-[1.5em] font-bold leading-[0.8em]">Heading</h1>
-                                    <p className="text-sm ">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore
-                                        magni repudiandae tenetur odio
-                                    </p>
-                                </div>
 
-                                <p className="cursor-pointer text-[0.7em] underline">learn more</p>
-                            </div>
-                        </div>
-                        <h1 className="text-center font-nunito text-md font-black text-purple-950">
-                            SOL Supply
-                        </h1>
-                        <p>{generalInfo && generalInfo.totalSupply}</p>
-                        <div>
-                            <div>
-                                <p>Circulating Supply</p> <p>{generalInfo && generalInfo.circulatingSupply }  {generalInfo && Math.round(generalInfo.circulatingSupply/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                            <div>
-                                <p>Non-circulating Supply</p> <p>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} {generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply)/generalInfo.totalSupply * 100)}</p>
-                            </div>
-                        </div>
-                    </div>
+            <div
+                className="relative flex flex-col items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
+            >
+                <div className="tab-container flex justify-start w-max">
+                    <input type="radio" name="tab" id="tab1" className="tab tab--1" />
+                    <label onClick={() => setSelectedTab(1)} className="tab_label text-black" for="tab1">Transaction Volume</label>
+
+                    <input type="radio" name="tab" id="tab2" className="tab tab--2" />
+                    <label onClick={() => setSelectedTab(2)} className="tab_label text-black" for="tab2">Price</label>
+
+
+                    <div className="indicator"></div>
+                </div>
+
+
+                {generalInfo ? <>
+                    {selectedTab === 1 && generalInfo && volumeData && <Chart
+                        chartType="Bar"
+                        width="100%"
+                        height="400px"
+                        data={volumeData}
+                        options={volumeOptions}
+                    />
+                    }
+
+                    {selectedTab === 2 && generalInfo && priceData && (
+                        <Chart
+                            chartType="Line"
+                            width="100%"
+                            height="400px"
+                            data={priceData}
+                            options={priceOptions}
+                        />
+                    )}</> : <p>Loading...</p>}
+            </div>
 
         </div >
     );

@@ -71,18 +71,18 @@ const AccountDetails = () => {
         console.log(generalInfo.data)
         setGeneralInfo(generalInfo.data)
 
-        if(response.data.type === 'stake'){
+        if (response.data.type === 'stake') {
             const stake = await axios.get(`https://public-api.solanabeach.io/v1/account/${id}/stake-rewards`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    Authorization: `${import.meta.env.VITE_API_KEY}`
-                },
-            }
-        )
-        console.log(stake.data)
-        setStakeRewards(stake.data)
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        Authorization: `${import.meta.env.VITE_API_KEY}`
+                    },
+                }
+            )
+            console.log(stake.data)
+            setStakeRewards(stake.data)
         }
 
         const tokenTotal = generalInfo.data.reduce((acc, item) => acc + item.price, 0)
@@ -123,25 +123,25 @@ const AccountDetails = () => {
                         {accountData && accountData.value ? (
                             <div className='flex flex-col gap-5 w-full' >
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Address</p> <p>{accountData.value.base.address.address}</p>
+                                    <p>Address</p> <p className='font-black text-purple-950'>{accountData.value.base.address.address}</p>
 
                                 </div>
 
                                 <div className="flex justify-between w-full text-sm">
-                                    <p>Owner Program</p> <p>{accountData.value.base.owner ? accountData.value.base.owner.name : "none"}</p>
+                                    <p>Owner Program</p> <p className='font-black text-purple-950'>{accountData.value.base.owner ? accountData.value.base.owner.name : "none"}</p>
                                 </div>
                                 <div className='grid grid-cols-2 w-full gap-4'>
                                     <div className="flex justify-between w-full text-sm">
-                                        <p>Balance</p><p>{(accountData.value.base.balance)}</p>
+                                        <p>Balance</p><p className='font-black text-purple-950'>{(accountData.value.base.balance)}</p>
                                     </div>
                                     <div className="flex justify-between w-full text-sm pl-2 border-black border-s-[1px]">
-                                        <p>Account Type</p><p>{accountData.type}</p>
+                                        <p>Account Type</p><p className='font-black text-purple-950'>{accountData.type}</p>
                                     </div>
                                     <div className="flex justify-between w-full text-sm">
-                                        <p>Token Balance</p><p>${totalToken} ({generalInfo && generalInfo.length} Tokens)</p>
+                                        <p>Token Balance</p><p className='font-black text-purple-950'>${totalToken} ({generalInfo && generalInfo.length} Tokens)</p>
                                     </div>
                                     <div className="flex justify-between w-full text-sm border-black border-s-[1px] pl-2">
-                                        <p>Rent Exempt Reserve</p><p>{accountData.value.base.rentExemptReserve ? accountData.value.base.rentExemptReserve : "Not Available"}</p>
+                                        <p>Rent Exempt Reserve</p><p className='font-black text-purple-950'>{accountData.value.base.rentExemptReserve ? accountData.value.base.rentExemptReserve : "Not Available"}</p>
                                     </div>
                                 </div>
                             </div>
@@ -149,9 +149,9 @@ const AccountDetails = () => {
                     </div>
 
                     {accountData.type === 'vote' &&
-                        <div className='flex flex-col gap-10'>
+                        <div className='flex gap-10'>
                             <div
-                                className="relative flex flex-col gap-5 items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
+                                className="relative flex flex-col gap-5 w-full items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
                             >
 
                                 <h1 className='flex justify-start w-full text-2xl font-semibold'>Vote Account Info</h1>
@@ -173,7 +173,7 @@ const AccountDetails = () => {
                             </div>
 
                             <div
-                                className="relative flex flex-col gap-5 items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
+                                className="relative flex flex-col w-full gap-5 items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
                             >
                                 <h1 className='flex justify-start w-full text-2xl font-semibold'>Vote Account Authorities
                                 </h1>
@@ -212,12 +212,12 @@ const AccountDetails = () => {
 
                             <div className="indicator"></div>
                         </div>
-                        {selectedTab === 1 && <table className="table-auto bg-white rounded-xl w-full mt-10 ">
+                        {selectedTab === 1 && <table className="table-auto bg-white rounded-xl w-full mt-5 ">
                             <thead>
                                 <tr className='border-b-[1px]'>
-                                    <th className="px-4 py-2">TRANSACTION HASH
+                                    <th className="text-center  px-10 py-2">TRANSACTION HASH
                                     </th>
-                                    <th className="flex justify-start px-4 py-2">INSTRUCTIONS	</th>
+                                    <th className="text-center flex justify-start px-4 py-2">INSTRUCTIONS	</th>
                                     <th className="px-4 py-2">STATUS</th>
                                     <th className="px-4 py-2">FEE</th>
                                     <th className="px-4 py-2">TIME</th>
@@ -229,7 +229,10 @@ const AccountDetails = () => {
                                     return (
                                         <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
                                             <td className="px-4 py-2">
+                                                <Link to={`/transactions/${txn.transactionHash}`} className='cursor-pointer text-blue-400'>
                                                 {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
+
+                                                </Link>
                                             </td>
                                             <td className="grid grid-cols-3 py-4 text-xs justify-center items-center w-max gap-2">
                                                 {txn.instructions && txn.instructions.map((ins, id) => {
@@ -272,23 +275,23 @@ const AccountDetails = () => {
                                 </tbody>
                             </table>}
 
-                            {selectedTab === 2 && accountData.type === 'stake' &&
+                        {selectedTab === 2 && accountData.type === 'stake' &&
                             <table className="table-auto w-full bg-white rounded-xl mt-10 ">
                                 <thead>
                                     <tr className='grid grid-cols-7 border-b-[1px]'>
                                         <th className="flex justify-start px-4 py-2">EPOCH
                                         </th>
-                                        <th className="flex justify-start px-4 py-2">REWARD SLOT	
+                                        <th className="flex justify-start px-4 py-2">REWARD SLOT
                                         </th>
                                         <th className="flex justify-start px-4 py-2">AMOUNT
                                         </th>
-                                        <th className="flex justify-start px-4 py-2">NEW BALANCE	
+                                        <th className="flex justify-start px-4 py-2">NEW BALANCE
                                         </th>
-                                        <th className="flex justify-start px-2 py-2">PERCENT CHANGE	
+                                        <th className="flex justify-start px-2 py-2">PERCENT CHANGE
                                         </th>
-                                        <th className="flex justify-start px-4 py-2">APR	
+                                        <th className="flex justify-start px-4 py-2">APR
                                         </th>
-                                        <th className="flex justify-start px-4 py-2">TIMESTAMP	
+                                        <th className="flex justify-start px-4 py-2">TIMESTAMP
                                         </th>
 
                                     </tr>
@@ -301,10 +304,10 @@ const AccountDetails = () => {
 
                                                 <td className="flex justify-start px-2 py-2">{txn.epoch}</td>
                                                 <td className="flex justify-start px-2 py-2">{txn.effectiveSlot}</td>
-                                                <td className="flex justify-start px-2 py-2">{txn.amount/1e9} SOL</td>
-                                                <td className="flex justify-start px-2 py-2">{txn.postBalance/1e9} SOL</td>
-                                                <td className="flex justify-center px-2 py-2">{(txn.percentChange*100).toString().substring(0,4)} %</td>
-                                                <td className="flex justify-start px-2 py-2">{(txn.apr.toString().substring(0,4))} %</td>
+                                                <td className="flex justify-start px-2 py-2">{txn.amount / 1e9} SOL</td>
+                                                <td className="flex justify-start px-2 py-2">{txn.postBalance / 1e9} SOL</td>
+                                                <td className="flex justify-center px-2 py-2">{(txn.percentChange * 100).toString().substring(0, 4)} %</td>
+                                                <td className="flex justify-start px-2 py-2">{(txn.apr.toString().substring(0, 4))} %</td>
                                                 <td className="flex justify-start px-2 py-2">{timeAgo(txn.timestamp)}</td>
                                             </tr>
                                         )
@@ -312,16 +315,11 @@ const AccountDetails = () => {
                                 </tbody>
                             </table>}
 
-                        {/* <div className='flex justify-center gap-1 bg-white w-full py-4 rounded-b-xl border-t-[1px] '>
-                            {validatorData.validator && validatorData.validator.delegatingStakeAccounts && validatorData.validator.delegatingStakeAccounts.slice(0, totalPages).map((txn, index) => {
-                                return (
-                                    <button onClick={() => setCurrentPage((index + 1) * 10)} className={currentPage === (index + 1) * 10 ? 'flex text-xs cursor-pointer p-2 bg-gray-200 rounded-full' : 'flex text-xs cursor-pointer p-2 hover:bg-gray-100 rounded-full'}>
-                                        {index + 1}
-                                    </button>
-                                )
-                            })
-                            }
-                        </div> */}
+                        {transactionData.length === 0 && <div className='flex justify-center gap-1 bg-white w-full py-4 rounded-b-xl border-t-[1px] '>
+
+                            Loading...
+
+                        </div>}
 
                     </div>
 
