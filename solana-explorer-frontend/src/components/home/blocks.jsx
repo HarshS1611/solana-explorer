@@ -68,9 +68,8 @@ const Blocks = () => {
                 <thead className="rounded-lg border-b-[1px] text-md w-full">
                     <tr className=" text-md  w-full">
                         <th className="flex justify-start py-4 ml-5  text-sm">Latest Blocks</th>
-                        <th className='text-white'>e</th>
-                        <th className='text-white'>ew</th>
-                        <th className="py-2 text-sm"><Link className='text-sky-700' to={'/blocks'}>View All</Link></th>
+    
+    
 
                     </tr>
                     <tr className='text-sm'>

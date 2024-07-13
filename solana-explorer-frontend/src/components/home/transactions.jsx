@@ -68,9 +68,7 @@ const Transactions = () => {
                 <thead className="rounded-lg border-b-[1px] w-full">
                     <tr className="   w-full">
                         <th className="flex justify-start py-4 ml-5 text-sm">Latest Transactions</th>
-                        <th className='text-white'>e</th>
-                        <th className='text-white'>ew</th>
-                        <th className="py-2 text-sm"><Link className='text-sky-700' to={'/transactions'}>View All</Link></th>
+                 
 
                     </tr>
                     <tr className='text-sm'>

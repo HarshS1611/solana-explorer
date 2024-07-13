@@ -26,6 +26,7 @@ function MainSection() {
             }
         )
         setGeneralInfo(generalInfo.data)
+        console.log(generalInfo.data)
 
         const response = await axios.get(`https://public-api.solanabeach.io/v1/market-chart-data?`,
             {
@@ -61,11 +62,12 @@ function MainSection() {
                 {
                     month: "short",
                     day: "2-digit",
-                }), item.price];
+                }), (item.price)];
         });
 
         const finalPrice = [["Time", "Price $"], ...pData];
         setPriceData(finalPrice);
+        console.log(finalPrice)
 
         setPriceOptions({
             chart: {
@@ -90,38 +92,38 @@ function MainSection() {
                     className="relative text-md flex flex-col items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
                 >
 
-                    <h1 >
-                        Total Stake (SOL)
+                    <h1 className='text-start font-bold w-full'>
+                        Total Supply (SOL)
                     </h1>
-                    <p className='text-2xl font-nunito text-md font-black text-purple-950'>{generalInfo && generalInfo.activatedStake}</p>
-                    <div className='flex gap-4 text-sm mt-5'>
+                    <p className=' text-start w-full font-nunito text-xl font-black text-purple-600'>{generalInfo && generalInfo.activatedStake}</p>
+                    <div className='flex justify-start w-full gap-4 text-sm mt-5'>
                         <div>
-                            <p>Current Stake</p> <p className='text-purple-950 font-semibold'>{generalInfo && generalInfo.delinquentStake}</p>
+                            <p className='text-start w-full'>Current Stake</p> <p className='text-purple-600 font-semibold'>{generalInfo && (generalInfo.activatedStake - generalInfo.delinquentStake)}</p>
                         </div>
                         <div>
-                            <p>Delinquent Stake</p> <p className='text-purple-950 font-semibold'>{generalInfo && (generalInfo.activatedStake - generalInfo.delinquentStake)}</p>
+                            <p className='text-start w-full'>Delinquent Stake</p><p className='text-purple-600 font-semibold'>{generalInfo && generalInfo.delinquentStake}</p> 
                         </div>
                     </div>
                 </div>
 
                 <div
-                    className="relative flex flex-col text-md gap-2 items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
+                    className="relative flex flex-col w-full text-md items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
                 >
 
-                    <h1 className="flex justify-start">
+                    <h1 className="flex font-bold  text-start w-full justify-start">
                         Total Transactions
                     </h1>
-                    <p className='text-2xl font-nunito text-md font-black text-purple-950'>{generalInfo && generalInfo.totalSupply}</p>
-                    <div className='flex gap-5'>
-                        <div  >
+                    <p className='text-xl text-start w-full  font-nunito font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
+                    <div className='flex justify-start w-full gap-5 py-2'>
+                        <div className='font-bold text-start w-full' >
                             <h1 >
                                 Current Epoch
                             </h1>
-                            <p className='text-3xl font-nunito font-black text-purple-950 '>{generalInfo && generalInfo.epoch}</p>
+                            <p className='text-xl font-nunito font-black text-purple-600 '>{generalInfo && generalInfo.epoch}</p>
                         </div>
-                        <div>
+                        <div className='font-bold text-start w-full'>
                             <div className='text-md'>
-                                <p>Average TPS</p> <p className='text-3xl font-nunito text-md font-black text-purple-950'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
+                                <p>Average TPS</p> <p className='text-xl font-nunito font-black text-purple-600'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
                             </div>
 
 
@@ -130,20 +132,18 @@ function MainSection() {
                 </div>
 
                 <div
-                    className="relative flex flex-col gap-4 text-md text-black items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-2"
+                    className="relative flex w-full px-6 flex-col text-md text-black items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-2"
                 >
-                    <div className='flex flex-col -mt-5 gap-2'>
-                        <h1 className="">
-                            SOL Supply
-                        </h1>
-                        <p className='text-center font-nunito text-2xl font-black text-purple-950'>{generalInfo && generalInfo.totalSupply}</p>
-                    </div>
-                    <div className='flex gap-2 text-xs'>
+                    <h1 className="flex text-start items-start font-bold w-full ">
+                        SOL Supply
+                    </h1>
+                    <p className='text-start w-full font-nunito text-xl font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
+                    <div className='flex flex-col justify-start w-full gap-2 mt-2 text-xs'>
                         <div>
-                            <p>Circulating Supply</p> <p className='text-purple-950 font-semibold'>{generalInfo && generalInfo.circulatingSupply}  {generalInfo && Math.round(generalInfo.circulatingSupply / generalInfo.totalSupply * 100)}</p>
+                            <p className='text-start w-full'>Circulating Supply ({generalInfo && Math.round(generalInfo.circulatingSupply / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && generalInfo.circulatingSupply}  </p>
                         </div>
                         <div>
-                            <p>Non-circulating Supply</p> <p className='text-purple-950 font-semibold'>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} {generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply) / generalInfo.totalSupply * 100)}</p>
+                            <p className='text-start w-full'>Non-circulating Supply ({generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply) / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} </p>
                         </div>
                     </div>
 
