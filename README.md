@@ -24,12 +24,12 @@ This project involves designing and developing a Solana blockchain explorer that
 
 - ## Installation 
 
-```
- git clone https://github.com/yourusername/explorer-dashboard.git
- cd solana-explorer-frontend
- npm install
- npm run dev
-```
+  ```
+   git clone https://github.com/yourusername/explorer-dashboard.git
+   cd solana-explorer-frontend
+   npm install
+   npm run dev
+  ```
   
 ## Screenshots
 
