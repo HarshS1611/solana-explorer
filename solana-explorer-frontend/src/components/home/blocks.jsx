@@ -55,9 +55,7 @@ const Blocks = () => {
     useEffect(() => {
 
         BlockAPI();
-        setInterval(() => {
-            BlockAPI();
-        }, 10000);
+ 
     }, []);
 
     return (

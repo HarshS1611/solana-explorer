@@ -21,9 +21,8 @@ function SearchComponent() {
                 return 'transaction';
             } else if (query.length === 9) {
                 return 'block';
-            } else if (query.startsWith('0x')) {
-                return 'latestTransaction';
-            } else {
+            }
+             else {
                 return 'unknown';
             }
         }
@@ -84,6 +83,7 @@ function SearchComponent() {
                     }
                     )
                 } else {
+                    setSearchType('address')
                     setSearchResult(response.data);
                     console.log(response.data);
 

@@ -24,9 +24,7 @@ const Navbar = () => {
     }
     useEffect(() => {
         fetchPrice()
-        setInterval(() => {
-            fetchPrice();
-        }, 10000);
+
     }, []);
 
 

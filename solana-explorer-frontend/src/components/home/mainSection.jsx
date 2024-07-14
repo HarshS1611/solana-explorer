@@ -81,10 +81,6 @@ function MainSection() {
     useEffect(() => {
         GetInfo();
 
-        setInterval(() => {
-            GetInfo();
-        }, 10000);
-
     }, []);
 
 
@@ -99,13 +95,13 @@ function MainSection() {
                     <h1 className='text-start font-bold w-full'>
                         Total Supply (SOL)
                     </h1>
-                    <p className=' text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'>{generalInfo && generalInfo.activatedStake}</p>
+                    <p className=' text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'>{generalInfo && (generalInfo.totalSupply/1e15).toFixed(2)}M</p>
                     <div className='xl:flex justify-start w-full gap-4 text-sm mt-2 xl:mt-5'>
                         <div>
-                            <p className='text-start w-full'>Current Stake</p> <p className='text-purple-600 text-start font-semibold'>{generalInfo && (generalInfo.activatedStake - generalInfo.delinquentStake)}</p>
+                            <p className='text-start w-full'>Current Stake</p> <p className='text-purple-600 text-start font-semibold'>{generalInfo && ((generalInfo.activatedStake - generalInfo.delinquentStake)/1e15).toFixed(2)}M</p>
                         </div>
                         <div>
-                            <p className='text-start w-full'>Delinquent Stake</p><p className='text-purple-600 text-start font-semibold'>{generalInfo && generalInfo.delinquentStake}</p>
+                            <p className='text-start w-full'>Delinquent Stake</p><p className='text-purple-600 text-start font-semibold'>{generalInfo && (generalInfo.delinquentStake/1e15).toFixed(2)}M</p>
                         </div>
                     </div>
                 </div>
@@ -117,7 +113,7 @@ function MainSection() {
                     <h1 className="flex font-bold  text-start w-full justify-start">
                         Total Transactions
                     </h1>
-                    <p className='text-sm lg:text-xl text-start w-full  font-nunito font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
+                    <p className='text-sm lg:text-xl text-start w-full  font-nunito font-black text-purple-600'>{generalInfo && (generalInfo.totalTransactionCount/1e9).toFixed(2)}B</p>
                     <div className='flex justify-start w-full xl:gap-5 py-2'>
                         <div className='font-bold text-start w-full' >
                             <div >
@@ -151,13 +147,13 @@ function MainSection() {
                     <h1 className="flex text-start items-start font-bold w-full ">
                         SOL Stake
                     </h1>
-                    <p className='text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
+                    <p className='text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'> {generalInfo && (generalInfo.activatedStake/1e15).toFixed(2)}M</p>
                     <div className='flex flex-col justify-start w-full gap-2 mt-2 text-xs'>
                         <div>
-                            <p className='text-start w-full'>Circulating Supply ({generalInfo && Math.round(generalInfo.circulatingSupply / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && generalInfo.circulatingSupply}  </p>
+                            <p className='text-start w-full'>Circulating Supply ({generalInfo && Math.round(generalInfo.circulatingSupply / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && (generalInfo.circulatingSupply/1e15).toFixed(2)}M  </p>
                         </div>
                         <div>
-                            <p className='text-start w-full'>Non-circulating Supply ({generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply) / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && (generalInfo.totalSupply - generalInfo.circulatingSupply)} </p>
+                            <p className='text-start w-full'>Non-circulating Supply ({generalInfo && Math.round((generalInfo.totalSupply - generalInfo.circulatingSupply) / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && ((generalInfo.totalSupply - generalInfo.circulatingSupply)/1e15).toFixed(2)}M </p>
                         </div>
                     </div>
 
