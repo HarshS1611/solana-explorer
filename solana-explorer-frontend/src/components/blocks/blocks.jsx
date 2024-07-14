@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaExchangeAlt } from "react-icons/fa";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import '../../styles/loading.css'
 
 const Blocks = () => {
 
@@ -56,66 +57,88 @@ const Blocks = () => {
     useEffect(() => {
 
         BlockAPI(currentPage);
-        
-    }, [ currentPage]);
+
+    }, [currentPage]);
 
     // console.log(blocks, currentPage)
     return (
         <>
-          
 
-            <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl'>
-                <table class=" table-auto bg-white rounded-t-xl text-black xl:w-full ">
+
+            <div className='overflow-auto bg-white md:p-4 bg-opacity-50 rounded-xl'>
+                <table class=" table-auto bg-white rounded-t-xl text-black w-full ">
                     <thead className="border-b-[1px] w-full">
                         <tr className="text-gray-400 w-fit">
-                            <th className="flex  py-2 w-fit justify-start  ml-5 ">Block Hash</th>
-                            <th className=""> Block</th>
+                            <th className="flex  py-2 w-fit justify-start text-xs md:text-md ml-5 ">Block Hash</th>
+                            <th className="text-xs md:text-md"> Block</th>
 
-                            <th className=""> 	
-                            Validator</th>
+                            <th className="text-xs md:text-md">
+                                Validator</th>
 
-                            <th className=" ">Reward (in SOL)</th>
+                            <th className=" text-xs md:text-md">Reward (in SOL)</th>
 
-                            <th className=""> Time</th>
+                            <th className="text-xs md:text-md"> Time</th>
 
 
                         </tr>
                     </thead>
                     <tbody>
-                        {blocks && blocks.map((transact, index) => {
+                        {blocks ? blocks.map((transact, index) => {
                             // console.log(transact)
                             return (
-                            <tr key={index} className="border-b-[0.7px] text-xs px-4 md:text-sm lg:text-sm xl:text-sm xl:mx-5 border-gray-400">
-                                <td className="flex w-fit gap-1 my-4 items-center ml-2">
-                                    <div className='flex  items-center border-[0.5px]  h-5 bg-black rounded-full'>
-                                        <FaExchangeAlt className='h-5 w-5 ' />
-                                    </div>
-                                    <Link to={`/transactions/${transact.blockhash}`} className='cursor-pointer text-sky-600'>
+                                <tr key={index} className="border-b-[0.7px] text-xs px-4 md:text-sm lg:text-sm xl:text-sm xl:mx-5 border-gray-400">
+                                    <td className="flex w-fit gap-1 my-4 items-center ml-2">
 
-                                        {(transact.blockhash)}
+                                        <Link to={`/transactions/${transact.blockhash}`} className='hidden xl:block cursor-pointer text-sky-600'>
 
-                                    </Link>
-                                </td>
-                                <td>
+                                            {(transact.blockhash)}
 
-                                    <Link to={`/blocks/${transact.blocknumber}`} className='cursor-pointer text-sky-600'>{transact.blocknumber}</Link>
-                                </td>
-                                <td>
-                                    <Link to={`/validator/${transact.proposer}`} className='cursor-pointer text-sky-600'>{(transact.proposer)}</Link>
-                                </td>
-                                <td>
-                                    <div className='text-xs'>{(transact.rewards[0].lamports / 1e9).toString().substring(0, 8)}</div>
-                                </td>
+                                        </Link>
 
-                                <td className='text-xs mr-2'> 
-                                    {transact.blocktime.absolute.absolute ?
-                                        <p>{timeAgo(transact.blocktime.absolute.absolute)}</p>
-                                        : <p>{timeAgo(transact.blocktime.absolute)}</p>
-                                    }
-                                </td>
-                            </tr>)
+                                        <Link to={`/transactions/${transact.blockhash}`} className='hidden md:block xl:hidden cursor-pointer text-sky-600'>
+
+                                            {(transact.blockhash).substring(0, 20)}...
+
+                                        </Link>
+                                        <Link to={`/transactions/${transact.blockhash}`} className='block md:hidden cursor-pointer text-sky-600'>
+
+                                            {(transact.blockhash).substring(0, 10)}...
+
+                                        </Link>
+                                    </td>
+                                    <td>
+
+                                        <Link to={`/blocks/${transact.blocknumber}`} className='cursor-pointer text-sky-600'>{transact.blocknumber}</Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/validator/${transact.proposer}`} className='hidden xl:block cursor-pointer text-sky-600'>{(transact.proposer)}</Link>
+                                        <Link to={`/validator/${transact.proposer}`} className='hidden md:block xl:hidden cursor-pointer text-sky-600'>{(transact.proposer).substring(0, 20)}...</Link>
+                                        <Link to={`/validator/${transact.proposer}`} className='block md:hidden cursor-pointer text-sky-600'>{(transact.proposer).substring(0, 10)}...</Link>
+
+
+                                    </td>
+                                    <td>
+                                        <div className='text-xs'>{(transact.rewards[0].lamports / 1e9).toString().substring(0, 8)}</div>
+                                    </td>
+
+                                    <td className='text-xs mr-2'>
+                                        {transact.blocktime.absolute.absolute ?
+                                            <p>{timeAgo(transact.blocktime.absolute.absolute)}</p>
+                                            : <p>{timeAgo(transact.blocktime.absolute)}</p>
+                                        }
+                                    </td>
+                                </tr>)
                         }
-                        )}
+                        ) : <div>
+                            <div className="spinner my-10">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>}
 
 
                     </tbody>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaExchangeAlt } from "react-icons/fa";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import '../../styles/loading.css'
 
 const Validators = () => {
 
@@ -78,36 +79,45 @@ const Validators = () => {
     return (
         <>
             <div>
-                <div className='mb-6 bg-white p-4 rounded-2xl shadow-xl w-full items-center gap-10  mt-10'>
-                    {generalInfo && validators &&
-                        <div className='flex justify-around'>
+                <div className='mb-6 bg-white p-4 rounded-2xl shadow-xl w-full items-center gap-10 '>
+                    {generalInfo && validators ?
+                        <div className='grid grid-cols-2 text-start lg:grid-cols-4 items-start gap-4 justify-center ml-5'>
                             <div>
-                                <p className='text-xl font-bold'>Validators</p><p className='text-blue-500 text-2xl font-bold mt-2'>{validators.length}</p><p className='text-xs'>Superminority: {generalInfo.superminority.nr}</p></div>
-                            <div><p className='text-xl font-bold'>Weighted Skip Rate <p className='text-blue-500 text-2xl mt-2'>{(generalInfo.skipRate.stakeWeightedSkipRate).toString().substring(0, 4)} %</p> </p><p className='text-xs'>Non-weighted: {((generalInfo.skipRate.skipRate - generalInfo.skipRate.stakeWeightedSkipRate) / generalInfo.skipRate.skipRate * 100).toString().substring(0, 4)} %</p>
+                                <p className='lg:text-xl font-bold'>Validators</p><p className='text-blue-500 text-xl lg:text-2xl font-bold mt-2'>{validators.length}</p><p className='text-xs'>Superminority: {generalInfo.superminority.nr}</p></div>
+                            <div><p className='lg:text-xl font-bold'>Weighted Skip Rate <p className='text-blue-500 text-xl lg:text-2xl mt-2'>{(generalInfo.skipRate.stakeWeightedSkipRate).toString().substring(0, 4)} %</p> </p><p className='text-xs'>Non-weighted: {((generalInfo.skipRate.skipRate - generalInfo.skipRate.stakeWeightedSkipRate) / generalInfo.skipRate.skipRate * 100).toString().substring(0, 4)} %</p>
                             </div>
-                            <div><p className='text-xl font-bold'>Nominal Staking APY <p className='text-blue-500 text-2xl mt-2'>{(generalInfo.stakingYield).toString().substring(0, 4)} %</p></p>
+                            <div><p className='lg:text-xl font-bold'>Nominal Staking APY <p className='text-blue-500 text-xl lg:text-2xl mt-2'>{(generalInfo.stakingYield).toString().substring(0, 4)} %</p></p>
                             </div>
-                            <div><p className='text-xl font-bold'>Node Versions <p className='text-blue-500 text-2xl mt-2'>{generalInfo.stakeWeightedNodeVersions[0].version}</p></p><p className='text-xs'>others: {(generalInfo.stakeWeightedNodeVersions[1].value).toString().substring(0, 4)} %</p>
+                            <div><p className='lg:text-xl font-bold'>Node Versions <p className='text-blue-500 text-xl lg:text-2xl mt-2'>{generalInfo.stakeWeightedNodeVersions[0].version}</p></p><p className='text-xs'>others: {(generalInfo.stakeWeightedNodeVersions[1].value).toString().substring(0, 4)} %</p>
                             </div>
                         </div>
-                    }
+                    : <div className='flex w-full justify-center items-center'>
+                    <div className="spinner my-10">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>}
                 </div>
 
-                <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl'>
+                <div className='overflow-auto bg-white lg:p-2 xl:p-4 bg-opacity-50 rounded-xl'>
                     <table class=" table-auto bg-white rounded-t-xl text-black xl:w-full ">
                         <thead className="border-b-[1px] w-full">
                             <tr className="text-gray-400 text-sm w-fit">
                                 <th className="flex  py-2 w-fit justify-start ml-2 ">#</th>
-                                <th className=""> VALIDATOR</th>
+                                <th className="text-xs lg:text-md"> VALIDATOR</th>
 
-                                <th className=""> STAKE</th>
+                                <th className="text-xs lg:text-md"> STAKE</th>
 
-                                <th className=" ">CUMULATIVE STAKE
+                                <th className="text-xs lg:text-md ">CUMULATIVE STAKE
                                 </th>
 
-                                <th className=""> COMMISSION</th>
+                                <th className="text-xs lg:text-md"> COMMISSION</th>
 
-                                <th className=""> LAST VOTE</th>
+                                <th className="text-xs lg:text-md"> LAST VOTE</th>
 
 
                             </tr>
@@ -115,15 +125,15 @@ const Validators = () => {
                         <tbody>
                             {validators && validators.slice(0, 100 * currentPage).map((transact, index) => {
 
-                                return (<tr key={index} className="border-b-[0.7px] text-xs md:text-sm lg:text-md xl:text-sm xl:mx-5 border-gray-400">
+                                return (<tr key={index} className="border-b-[0.7px] text-xs md:text-sm lg:text-md xl:text-sm  mr-2 xl:mx-5 border-gray-400">
                                     <td>
                                         {index + 1}
                                     </td>
                                     <td className="flex w-fit gap-4 my-2 items-center ml-2">
                                         <div className='flex  items-center border-[0.5px]  h-10  rounded-full'>
-                                            {transact.pictureURL ? <img src={transact.pictureURL} className='h-10 w-10 rounded-full' /> : <p className='flex items-center text-md font-bold justify-center h-10 w-10 rounded-full'>{transact.moniker[0]}</p>}
+                                            {transact.pictureURL ? <img src={transact.pictureURL} className='h-5 w-5 lg:h-10 lg:w-10 rounded-full' /> : <p className='flex items-center text-md font-bold justify-center h-10 w-10 rounded-full'>{transact.moniker[0]}</p>}
                                         </div>
-                                        <Link to={`/validator/${transact.votePubkey}`} className='cursor-pointer text-sm text-sky-600'>
+                                        <Link to={`/validator/${transact.votePubkey}`} className='cursor-pointer text-start text-xs lg:text-sm text-sky-600'>
 
                                             {transact.moniker ? transact.moniker : (transact.votePubkey).substring(0, 10)}...{(transact.votePubkey).substring(35, transact.votePubkey.length)}
 

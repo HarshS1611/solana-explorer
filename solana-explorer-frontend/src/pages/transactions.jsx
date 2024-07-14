@@ -7,7 +7,7 @@ const AllTransactions = () => {
     return (
         <div className="home overflow-hidden">
             <div >
-                <div className='flex justify-center w-full items-center gap-10  mt-10'>
+                <div className='lg:flex justify-center w-full items-center gap-10  mt-10'>
                     <div>
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button
@@ -38,12 +38,16 @@ const AllTransactions = () => {
 
                         </Link>
                     </div>
-                    <div className='flex justify-start text-4xl w-full text-white font-bold'>All Transactions
+                    <div className='md:flex items-center w-full gap-10'>
 
+                        <div className='flex justify-start text-2xl mt-2 md:text-4xl w-full text-white font-bold'>All Transactions
+
+                        </div>
+                        <div className='w-full'>
+                            <SearchComponent />
+                        </div>
                     </div>
-                    <div className='w-full'>
-                        <SearchComponent />
-                    </div>
+
 
                 </div>
 

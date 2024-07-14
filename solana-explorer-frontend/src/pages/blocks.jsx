@@ -9,7 +9,7 @@ const AllBlocks = () => {
     return (
         <div className="home overflow-hidden">
             <div >
-                <div className='flex justify-center w-full items-center gap-10  mt-10'>
+                <div className='md:flex justify-center w-full items-center gap-10  mt-10'>
                     <div>
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button
@@ -40,11 +40,13 @@ const AllBlocks = () => {
 
                         </Link>
                     </div>
-                    <div className='flex justify-start text-4xl w-full text-white font-bold'>All Blocks
+                    <div className='md:flex  items-center gap-10 w-full'>
+                        <div className='flex justify-start text-2xl lg:text-4xl w-full mt-2 text-white font-bold'>All Blocks
 
-                    </div>
-                    <div className='w-full'>
-                        <SearchComponent />
+                        </div>
+                        <div className='w-full'>
+                            <SearchComponent />
+                        </div>
                     </div>
 
                 </div>

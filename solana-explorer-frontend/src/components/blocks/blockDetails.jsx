@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { FaArrowDown } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import '../../styles/loading.css';
 import '../../styles/transaction.css';
 
 const BlockDetails = () => {
@@ -89,20 +88,31 @@ const BlockDetails = () => {
                                 <div className="flex justify-between w-full text-sm">
                                     <p className='font-semibold text-xl'>{blockData.blocknumber}</p>
                                 </div>
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Block Hash</p> <p>{blockData.blockhash}</p>
+                                {blockData.blockHash && <div className="flex justify-between w-full text-sm">
+                                    <p>Block Hash</p> <p className='hidden md:block'>{blockData.blockhash}</p><p className='md:hidden block'>{(blockData.blockhash).substring(0, 15)}...</p>
 
-                                </div>
+                                </div>}
 
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Previous BlockHash</p> <p>{blockData.previousblockhash}</p>
-                                </div>
+                               {blockData.previousblockhash &&  <div className="flex justify-between w-full text-sm">
+                                    <p>Previous BlockHash</p> <p className='hidden md:block'>{blockData.previousblockhash}</p>
+                                    <p className='md:hidden block'>{(blockData.previousblockhash).substring(0, 15)}...</p>
+                                </div>}
                                 <div className="flex justify-between w-full text-sm">
                                     <p>Proposer</p><p >{blockData.proposerData && blockData.proposerData.name ? (<div className='flex items-center gap-2'><img className='w-5 h-5' src={blockData.proposerData.image} alt={blockData.proposer} /> {blockData.proposerData.name}</div>) : blockData.proposer}</p>
                                 </div>
 
                             </div>
-                        ) : <>Loading..</>}
+                        ) :
+                            <div className='flex w-full justify-center items-center'>
+                                <div className="spinner my-10">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>}
                     </div>
 
                     <div>
@@ -163,11 +173,11 @@ const BlockDetails = () => {
                     </div>
 
 
-                    <div>
-                        <table className="table-auto bg-white rounded-xl w-full mt-10 ">
+                    <div className='overflow-auto bg-white md:p-4 bg-opacity-50 rounded-xl'>
+                        <table className="table-auto  bg-white rounded-xl w-full  ">
                             <thead>
                                 <tr className='border-b-[1px]'>
-                                    <th className="px-4 py-2">TRANSACTION HASH	
+                                    <th className="px-4 py-2">TRANSACTION HASH
                                     </th>
                                     <th className="flex justify-start px-4 py-2">INSTRUCTIONS	</th>
                                     <th className="px-4 py-2">STATUS</th>
@@ -176,28 +186,31 @@ const BlockDetails = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                               
-                                    {transactionData.data && transactionData.data.map((txn, index) => {
-                                        return (
-                                            <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
-                                                <td className="px-4 py-2">  
-                                                <Link className='cursor-pointer text-blue-500' to={`/transactions/${txn.transactionHash}`}>                                         
-                                                 {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
-                                                </Link>
-                                                </td>
-                                                <td className="grid grid-cols-3 py-4 text-xs justify-center items-center w-max gap-2">
-                                                    {txn.instructions && txn.instructions.map((ins,id)=>{
 
-                                                    return(
-                                                            <p className='flex justify-start'>{Object.keys(ins)[0] == 'raw' ? "Unknown" : Object.keys(ins.parsed) }</p>
-                                                       ) 
+                                {transactionData.data && transactionData.data.map((txn, index) => {
+                                    return (
+                                        <tr key={index} className='md:ml-4 py-2 border-b-[1px] w-full'>
+                                            <td className="px-4 py-2">
+                                                <Link className='hidden md:block cursor-pointer text-blue-500' to={`/transactions/${txn.transactionHash}`}>
+                                                    {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
+                                                </Link>
+                                                <Link className='md:hidden cursor-pointer text-blue-500' to={`/transactions/${txn.transactionHash}`}>
+                                                    {(txn.transactionHash).substring(0, 4)}...{(txn.transactionHash).substring(84, txn.transactionHash.length)}
+                                                </Link>
+                                            </td>
+                                            <td className="grid grid-cols-3 py-4 text-xs justify-center items-center w-max gap-2">
+                                                {txn.instructions && txn.instructions.map((ins, id) => {
+
+                                                    return (
+                                                        <p className='flex justify-start'>{Object.keys(ins)[0] == 'raw' ? "Unknown" : Object.keys(ins.parsed)}</p>
+                                                    )
                                                 })}</td>
-                                                <td className="px-4 py-2">{txn.valid ? "Success" : "Failed"}</td>
-                                                <td className="px-4 py-2">{txn.meta.fee}</td>
-                                                <td className="px-4 py-2">{timeAgo(txn.blocktime.absolute)}</td>
-                                            </tr>
-                                        )
-                                    })}
+                                            <td className="md:px-4 py-2">{txn.valid ? "Success" : "Failed"}</td>
+                                            <td className="md:px-4 py-2">{txn.meta.fee}</td>
+                                            <td className="md: px-4 py-2">{timeAgo(txn.blocktime.absolute)}</td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>

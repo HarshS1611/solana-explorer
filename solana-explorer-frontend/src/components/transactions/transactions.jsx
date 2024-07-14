@@ -31,9 +31,9 @@ const Transactions = () => {
         }
         interval = seconds / 60;
         if (interval > 1) {
-            return Math.floor(interval) + " minutes ago";
+            return Math.floor(interval) + " mins ago";
         }
-        return Math.floor(seconds) + " seconds ago";
+        return Math.floor(seconds) + " secs ago";
     };
 
     const TransactionAPI = async (page) => {
@@ -55,26 +55,26 @@ const Transactions = () => {
 
     useEffect(() => {
 
-       TransactionAPI(currentPage);
-        
-    }, [ currentPage]);
+        TransactionAPI(currentPage);
+
+    }, [currentPage]);
 
     console.log(transactions, currentPage)
     return (
         <>
 
-<div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl'>
-                <table class=" table-auto bg-white rounded-t-xl text-black xl:w-full ">
-                    <thead className="border-b-[1px] w-full">
+            <div className='overflow-auto bg-white md:p-4 bg-opacity-50 rounded-xl'>
+                <table class=" table-auto bg-white rounded-t-xl text-black md:w-full ">
+                    <thead className="border-b-[1px] text-xs md:text-md w-full">
                         <tr className="text-gray-400 w-fit">
-                            <th className="flex  py-2 w-fit justify-start  ml-5 ">Signature</th>
-                            <th className=""> Block</th>
+                            <th className="flex text-xs md:text-md py-2 w-fit justify-start  ml-5 ">Signature</th>
+                            <th className="text-xs md:text-md"> Block</th>
 
-                            <th className=""> Validator</th>
+                            <th className="text-xs md:text-md"> Validator</th>
 
-                            <th className=" ">Fee (in SOL)</th>
+                            <th className=" text-xs md:text-md">Fee (in SOL)</th>
 
-                            <th className=""> Time</th>
+                            <th className="text-xs md:text-md"> Time</th>
 
 
                         </tr>
@@ -82,14 +82,19 @@ const Transactions = () => {
                     <tbody>
                         {transactions && transactions.map((transact, index) => {
                             // console.log(transact)
-                            return (<tr key={index} className="border-b-[0.7px] text-xs md:text-sm lg:text-md xl:text-sm xl:mx-5 border-gray-400">
-                                <td className="flex w-fit gap-4 my-2 items-center ml-2">
-                                    <div className='flex  items-center border-[0.5px]  h-10 bg-black rounded-full'>
-                                        <FaExchangeAlt className='h-5 w-10 ' />
-                                    </div>
-                                    <Link to={`/transactions/${transact.transactionHash}`} className='cursor-pointer text-sky-600'>
+                            return (
+                            <tr key={index} className="text-center border-b-[0.7px] text-xs md:text-sm lg:text-md xl:text-sm xl:mx-5 border-gray-400">
+                                <td className="flex  w-fit gap-4 my-2 items-center ml-4">
 
-                                        {(transact.transactionHash).substring(0, 30)}...{(transact.transactionHash).substring(70, transact.transactionHash.length)}
+                                    <Link to={`/transactions/${transact.transactionHash}`} className='lg:hidden cursor-pointer text-sky-600'>
+
+                                        {(transact.transactionHash).substring(0, 4)}...{(transact.transactionHash).substring(85, transact.transactionHash.length)}
+
+                                    </Link>
+
+                                    <Link to={`/transactions/${transact.transactionHash}`} className='hidden text-center lg:block cursor-pointer text-sky-600'>
+
+                                        {(transact.transactionHash).substring(0, 10)}...{(transact.transactionHash).substring(70, transact.transactionHash.length)}
 
                                     </Link>
                                 </td>
@@ -98,7 +103,10 @@ const Transactions = () => {
                                     <Link to={`/blocks/${transact.blockNumber}`} className='cursor-pointer text-sky-600'>{transact.blockNumber}</Link>
                                 </td>
                                 <td>
-                                    <Link to={`/address/${transact.accounts[0].account.address}`} className='cursor-pointer text-sky-600'>{(transact.accounts[0].account.address).substring(0, 10)}...{(transact.accounts[0].account.address).substring(30, transact.accounts[0].account.length)}</Link>
+                                    <Link to={`/address/${transact.accounts[0].account.address}`} className='lg:hidden cursor-pointer text-sky-600'>{(transact.accounts[0].account.address).substring(0, 4)}...{(transact.accounts[0].account.address).substring(40, transact.accounts[0].account.length)}</Link>
+
+                                    <Link to={`/address/${transact.accounts[0].account.address}`} className='hidden lg:block cursor-pointer text-sky-600'>{(transact.accounts[0].account.address).substring(0, 10)}...{(transact.accounts[0].account.address).substring(30, transact.accounts[0].account.length)}</Link>
+
                                 </td>
                                 <td>
                                     <div className='text-xs'>{(transact.meta.fee / 1e9).toString().substring(0, 8)}</div>
@@ -106,7 +114,7 @@ const Transactions = () => {
 
                                 <td>
 
-                                    <p>{timeAgo(transact.blocktime.absolute)}</p>
+                                    <p className='text-xs'>{timeAgo(transact.blocktime.absolute)}</p>
                                 </td>
                             </tr>)
                         }

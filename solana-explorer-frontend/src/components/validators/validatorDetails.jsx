@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { FaArrowDown } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import '../../styles/loading.css';
 import '../../styles/transaction.css';
 
 const ValidatorDetails = () => {
@@ -75,21 +74,7 @@ const ValidatorDetails = () => {
                 },
             }
         )
-        // console.log(generalInfo.data)
         setGeneralInfo(generalInfo.data)
-
-
-        // const blockTxns = await axios.get(`${import.meta.env.VITE_API_URL}/block-transactions/${id}?offet=0&limit=10`,
-        //     {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Access-Control-Allow-Origin': '*',
-        //             Authorization: `${import.meta.env.VITE_API_KEY}`
-        //         },
-        //     }
-        // )
-        // console.log(blockTxns.data)
-        // setTransactionData(blockTxns.data)
 
     }
 
@@ -121,12 +106,14 @@ const ValidatorDetails = () => {
 
                                                 <p>{(validatorData.validator.votePubkey).substring(0, 10)}...{(validatorData.validator.votePubkey).substring(35, validatorData.validator.votePubkey.length)}</p>}
                                         </Link>
-                                        <p className='flex justify-start text-xs'>Vote Key: {validatorData.validator.votePubkey}</p>
-                                        <p className='flex justify-start text-xs'>Identity: {validatorData.validator.nodePubkey}</p>
+                                        <p className='md:block hidden text-start text-xs'>Vote Key: {validatorData.validator.votePubkey}</p>
+                                        <p className='md:block hidden text-start text-xs'>Identity: {validatorData.validator.nodePubkey}</p>
+                                        <p className='md:hidden flex text-start text-xs'>Vote Key: {(validatorData.validator.votePubkey).substring(0,15)}...</p>
+                                        <p className='md:hidden flex text-start text-xs'>Identity: {(validatorData.validator.nodePubkey).substring(0,15)}...</p>
                                     </div>
                                 </div>
                                 <div className="flex justify-between w-full text-sm">
-                                {validatorData.validator.website &&  <><p>Website</p> <a className='text-blue-500' href={validatorData.validator.website} target='blank' >{validatorData.validator.website }</a></>}   
+                                    {validatorData.validator.website && <><p>Website</p> <a className='text-blue-500' href={validatorData.validator.website} target='blank' >{validatorData.validator.website}</a></>}
 
                                 </div>
 
@@ -145,13 +132,22 @@ const ValidatorDetails = () => {
                                 </div>
 
                             </div>
-                        ) : <>Loading..</>}
+                        ) : <div className='flex w-full justify-center items-center'>
+                            <div className="spinner my-10">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>}
                     </div>
 
 
 
 
-                    <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl mt-10'>
+                    <div className='overflow-auto bg-white md:p-4 bg-opacity-50 rounded-xl mt-10'>
                         <table className="table-auto bg-white rounded-t-xl w-full  ">
                             <thead>
                                 <tr className='border-b-[1px]'>
@@ -167,11 +163,16 @@ const ValidatorDetails = () => {
                                 {validatorData.validator && validatorData.validator.delegatingStakeAccounts && validatorData.validator.delegatingStakeAccounts.slice(currentPage - 10, currentPage).map((txn, index) => {
                                     return (
                                         <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
-                                            <td className="px-6 py-2">
-                                            <Link to={`/account/${txn.pubkey}`} className="flex text-sm items-center gap-2 cursor-pointer text-blue-400">
-                                                    <p>{(txn.pubkey)}</p>
-                                                </Link>
-                                                
+                                            <td className="md:px-6 py-2">
+                                                {txn.pubkey && <>
+                                                    <Link to={`/account/${txn.pubkey}`} className="hidden md:block  text-sm items-center gap-2 cursor-pointer text-blue-400">
+                                                        <p>{(txn.pubkey)}</p>
+                                                    </Link>
+                                                    <Link to={`/account/${txn.pubkey}`} className="block md:hidden text-sm items-center gap-2 cursor-pointer text-blue-400">
+                                                        <p>{(txn.pubkey).substring(0,10)}...</p>
+                                                    </Link>
+                                                    </>}
+
                                             </td>
 
                                             <td className="px-4 py-2">{txn.data.stake.delegation.activation_epoch}</td>
@@ -183,7 +184,7 @@ const ValidatorDetails = () => {
                             </tbody>
                         </table>
                         <div className='flex justify-center gap-1 bg-white w-full py-4 rounded-b-xl border-t-[1px] '>
-                            {validatorData.validator && validatorData.validator.delegatingStakeAccounts && validatorData.validator.delegatingStakeAccounts.slice(0, totalPages).map((txn, index) => {
+                            {validatorData.validator && validatorData.validator.delegatingStakeAccounts && validatorData.validator.delegatingStakeAccounts.slice(0, 10).map((txn, index) => {
                                 return (
                                     <button onClick={() => setCurrentPage((index + 1) * 10)} className={currentPage === (index + 1) * 10 ? 'flex text-xs cursor-pointer p-2 bg-gray-200 rounded-full' : 'flex text-xs cursor-pointer p-2 hover:bg-gray-100 rounded-full'}>
                                         {index + 1}

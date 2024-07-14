@@ -114,7 +114,7 @@ function SearchComponent() {
 
     return (
         <div className='flex justify-end'>
-            <div className="flex flex-col justify-end w-96 lg:w-[70%] xl:w-full gap-4 text-white py-5">
+            <div className="flex flex-col justify-end w-96 lg:w-[80%] xl:w-full gap-4 text-white py-5">
 
                 <form >
                     <div class="flex">

@@ -87,7 +87,7 @@ function MainSection() {
 
     return (
         <div className="flex flex-col gap-4 text-white">
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
+            {generalInfo ? <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
                 <div
                     className="relative text-md flex flex-col items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
                 >
@@ -151,25 +151,38 @@ function MainSection() {
 
 
 
-            </div>
-
-            <div
+            </div> : <div
                 className="relative flex flex-col items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
             >
-                
+                <div className='flex w-full justify-center items-center'>
+                    <div className="spinner my-10">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>}
+            <div className='mb-6 bg-white p-4 rounded-2xl shadow-xl w-full items-center gap-10 '>
+
+
+
+
 
 
                 {generalInfo ? <>
-                    <div className="tab-container flex justify-start w-max">
-                    <input type="radio" name="tab" id="tab1" className="tab tab--1" />
-                    <label onClick={() => setSelectedTab(1)} className="tab_label text-black" for="tab1">Transaction Volume</label>
+                    <div className="tab-container flex justify-start ml-10 mb-5 w-max">
+                        <input type="radio" name="tab" id="tab1" className="tab tab--1" />
+                        <label onClick={() => setSelectedTab(1)} className="tab_label text-black" for="tab1">Transaction Volume</label>
 
-                    <input type="radio" name="tab" id="tab2" className="tab tab--2" />
-                    <label onClick={() => setSelectedTab(2)} className="tab_label text-black" for="tab2">Price</label>
+                        <input type="radio" name="tab" id="tab2" className="tab tab--2" />
+                        <label onClick={() => setSelectedTab(2)} className="tab_label text-black" for="tab2">Price</label>
 
 
-                    <div className="indicator"></div>
-                </div>
+                        <div className="indicator"></div>
+                    </div>
                     {selectedTab === 1 && volumeData && volumeData.length > 0 && <Chart
                         chartType="Bar"
                         width="100%"
@@ -187,7 +200,7 @@ function MainSection() {
                             data={priceData}
                             options={priceOptions}
                         />
-                    )}</> : <div>
+                    )}</> : <div className='flex w-full justify-center items-center'>
                     <div className="spinner my-10">
                         <div></div>
                         <div></div>

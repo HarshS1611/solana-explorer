@@ -7,7 +7,7 @@ const BlockInfo = () => {
     return (
         <div className="home overflow-hidden">
             <div >
-                <div className='flex justify-center w-full items-center gap-10  mt-10'>
+                <div className='md:flex justify-center w-full items-center gap-10  mt-10'>
                     <div>
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button
@@ -38,11 +38,13 @@ const BlockInfo = () => {
 
                         </Link>
                     </div>
-                    <div className='flex justify-start text-4xl w-full text-white font-bold'>Block Details
+                    <div className='md:flex w-full'>
+                        <div className='md:flex text-start w-full text-2xl lg:text-4xl mt-2 text-white font-bold'>Block Details
 
-                    </div>
-                    <div className='w-full'>
-                        <SearchComponent />
+                        </div>
+                        <div className='w-full'>
+                            <SearchComponent />
+                        </div>
                     </div>
 
                 </div>

@@ -53,16 +53,16 @@ const Navbar = () => {
                 <div className="hidden w-full md:block md:w-auto md:mr-10" id="navbar-default">
                     <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white ">
                         <li>
-                            <a href="#" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-black md:hover:border-b-[2px] md:rounded-none md:border-green-600 md:p-0  " aria-current="page">Home</a>
+                            <Link to={`/`} className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-black md:hover:border-b-[2px] md:rounded-none md:border-green-600 md:p-0  " aria-current="page">Home</Link>
                         </li>
                         <li>
-                            <a href="#" className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-black md:hover:border-b-[2px] md:rounded-none md:border-green-600 md:p-0 " aria-current="page">Transactions</a>
+                            <Link to={`/transactions`} className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-black md:hover:border-b-[2px] md:rounded-none md:border-green-600 md:p-0 " aria-current="page">Transactions</Link>
                         </li>
                         <li>
-                            <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-black md:rounded-none md:hover:border-b-[2px] md:border-green-600 md:p-0  ">Blocks</a>
+                            <Link to={`/blocks`} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-black md:rounded-none md:hover:border-b-[2px] md:border-green-600 md:p-0  ">Blocks</Link>
                         </li>
                         <li>
-                            <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-black md:rounded-none md:hover:border-b-[2px] md:border-green-600 md:p-0  ">Validators</a>
+                            <Link to={`/validators`} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:text-black md:rounded-none md:hover:border-b-[2px] md:border-green-600 md:p-0  ">Validators</Link>
                         </li>
                        
                     </ul>

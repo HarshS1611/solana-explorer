@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <div>
             <div className='md:flex justify-center w-full items-center mt-10'>
-                <div className='flex text-start text-3xl w-full text-white font-bold'>Explore Solana Blockchain
+                <div className='flex text-start text-white text-3xl w-full  font-bold'>Explore Solana Blockchain
 
                 </div>
                 <div className='w-full'>

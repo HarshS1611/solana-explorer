@@ -67,7 +67,7 @@ const Transactions = () => {
 
                     </tr>
                     <tr className='text-xs md:text-sm'>
-                        <th className='text-start md:text-center pl-5 w-10 md:pl-0 md:w-40'>TX HASH</th>
+                        <th className='text-start pl-5 w-10 md:w-40'>TX HASH</th>
                         <th>INSTRUCTIONS</th>
                         <th className='flex justify-end w-10'>SLOT</th>
                         <th className=''>TIME</th>
@@ -81,10 +81,15 @@ const Transactions = () => {
                                 <td className="flex py-4 w-max items-center flex-row gap-2 justify-start ml-5">
                                     
                                     <div className='flex justify-start'>
-                                        <Link to={`/transactions/${transact.transactionHash}`} className="flex justify-start cursor-pointer text-sky-600">
+                                        <Link to={`/transactions/${transact.transactionHash}`} className="lg:hidden  flex justify-start cursor-pointer text-sky-600">
 
                                             {(transact.transactionHash).substring(0, 4)}...{(transact.transactionHash).substring(83, transact.transactionHash.length)}
                                         </Link>
+                                        <Link to={`/transactions/${transact.transactionHash}`} className="hidden md:block justify-start cursor-pointer text-sky-600">
+
+                                            {(transact.transactionHash).substring(0, 10)}...{(transact.transactionHash).substring(80, transact.transactionHash.length)}
+                                        </Link>
+
 
                                     </div>
 

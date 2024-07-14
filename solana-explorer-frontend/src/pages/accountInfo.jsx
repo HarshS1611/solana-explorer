@@ -9,7 +9,7 @@ const AccountInfo = () => {
     return (
         <div className="home overflow-hidden">
             <div >
-                <div className='flex justify-center w-full items-center gap-10  mt-10'>
+                <div className='md:flex justify-center w-full items-center gap-10  mt-10'>
                     <div>
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button
@@ -40,17 +40,19 @@ const AccountInfo = () => {
 
                         </Link>
                     </div>
-                    <div className='flex justify-start text-4xl w-full text-white font-bold'>Account Details
+                    <div className='md:flex w-full items-center'>
+                        <div className='flex justify-start text-2xl mt-2 md:text-4xl w-full text-white font-bold'>Account Details
 
-                    </div>
-                    <div className='w-full'>
-                        <SearchComponent />
+                        </div>
+                        <div className='w-full'>
+                            <SearchComponent />
+                        </div>
                     </div>
 
                 </div>
 
                 <div className='flex  flex-col gap-10 py-8 xl:py-10'>
-                    <AccountDetails/>
+                    <AccountDetails />
                 </div>
             </div>
         </div>

@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { FaArrowDown } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import '../../styles/loading.css';
 import '../../styles/transaction.css';
 
 const TransactionDetails = () => {
@@ -65,7 +64,7 @@ const TransactionDetails = () => {
         <>
             <div>
                 <div className=''>
-                    
+
 
                     <div
                         className="relative flex flex-col gap-5 items-center justify-center rounded-lg border-[1px] shadow-xl bg-white p-[1.5em] "
@@ -73,14 +72,19 @@ const TransactionDetails = () => {
 
                         {transactionData ? (
                             <div className='flex flex-col gap-5 w-full' id='scrSpySummary'>
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Transaction Hash</p> <p className='font-black text-purple-950'>{transactionData.transactionHash}</p>
+                               {transactionData && transactionData.transactionHash && <div className="flex justify-between w-full text-sm">
+                                    <p>Transaction Hash</p> <p className='font-black text-purple-950 hidden xl:block'>{transactionData.transactionHash}</p> 
+                                    <p className='font-black text-purple-950 hidden md:block xl:hidden'>{ (transactionData.transactionHash).substring(0, 50)}...</p>
+                                    <p className='font-black text-purple-950 block md:hidden'>{ (transactionData.transactionHash).substring(0, 15)}..</p>
 
-                                </div>
+                                </div>}
 
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Recent BlockHash</p> <p className='font-black text-purple-950'>{transactionData.recentBlockhash}</p>
-                                </div>
+                                {transactionData && transactionData.recentBlockhash && <div className="flex justify-between w-full text-sm">
+                                    <p>Recent BlockHash</p>
+                                    <p className='font-black text-purple-950 hidden xl:block'>{transactionData.recentBlockhash}</p>
+                                     <p className='font-black text-purple-950 hidden md:block xl:hidden'>{(transactionData.recentBlockhash).substring(0, 50)}..</p>
+                                    <p className='font-black text-purple-950 block md:hidden'>{(transactionData.recentBlockhash).substring(0, 15)}..</p>
+                                </div>}
                                 <div className='grid grid-cols-2 w-full gap-4'>
                                     <div className="flex justify-between w-full text-sm">
                                         <p>Timestamp</p><p className='font-black text-purple-950'>{transactionData.blocktime && timeAgo(transactionData.blocktime.absolute)}</p>
@@ -96,11 +100,21 @@ const TransactionDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                        ) : <>Loading..</>}
+                        ) : 
+                        <div className='flex w-full justify-center items-center'>
+                            <div className="spinner my-10">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>}
                     </div>
 
-                    <div>
-                        <table className="table-auto bg-white rounded-xl w-full mt-10 ">
+                    <div className='overflow-auto w-full bg-white md:p-4 mt-5 bg-opacity-50 rounded-xl'>
+                        <table className="table-auto bg-white rounded-xl w-full ">
                             <thead>
                                 <tr className='border-b-[1px]'>
                                     <th className="px-4 py-2">ACCOUNT INPUTS
@@ -115,9 +129,18 @@ const TransactionDetails = () => {
                                     <td className='px-4 py-4'>
                                         {transactionData && transactionData.accounts ? transactionData.accounts.map((acc, indx) => {
                                             return (
-                                                <Link to={`/account/${acc.account.address}`} className="flex text-sm items-center gap-2 cursor-pointer text-blue-400">
-                                                    <p>{acc.account.address}</p>
-                                                </Link>
+                                                <>
+                                                    <Link to={`/account/${acc.account.address}`} className=" text-start lg:block hidden text-sm items-center gap-2 cursor-pointer text-blue-400">
+                                                        <p>{acc.account.address}</p>
+                                                    </Link>
+                                                    <Link to={`/account/${acc.account.address}`} className="hidden md:block lg:hidden text-sm items-center gap-2 cursor-pointer text-blue-400">
+                                                        <p>{(acc.account.address).substring(0,15)}...</p>
+                                                    </Link>
+                                                    <Link to={`/account/${acc.account.address}`} className="block md:hidden  text-sm items-center gap-2 cursor-pointer text-blue-400">
+                                                        <p>{(acc.account.address).substring(0,5)}...</p>
+                                                    </Link>
+                                                </>
+
                                             )
                                         }) : <>Loading..</>}
 
@@ -125,7 +148,7 @@ const TransactionDetails = () => {
                                     <td>
                                         {transactionData && transactionData.meta && transactionData.meta.postBalances ? transactionData.meta.postBalances.slice(0, transactionData.accounts.length).map((acc, indx) => {
                                             return (
-                                                <div className="flex text-sm items-center gap-2">
+                                                <div className="flex text-xs md:text-sm items-center gap-2">
                                                     <p>{(acc / 1e9)} SOL</p>
                                                 </div>
                                             )
@@ -138,7 +161,7 @@ const TransactionDetails = () => {
                                                 setPayer(indx)
                                             }
                                             return (
-                                                <div className="flex text-sm items-center gap-2">
+                                                <div className="flex text-xs md:text-sm items-center gap-2">
                                                     <p>{((acc - transactionData.meta.preBalances[indx]) / 1e9)} SOL</p>
                                                 </div>
                                             )
@@ -148,7 +171,7 @@ const TransactionDetails = () => {
                                     <td>
                                         {transactionData && transactionData.accounts ? transactionData.accounts.map((acc, indx) => {
                                             return (
-                                                <div className="flex text-sm justify-start items-center gap-1">
+                                                <div className="flex text-xs md:text-sm justify-start items-center gap-1">
                                                     <p className='text-white'>{indx}</p>
                                                     <p>{indx == payer && "Payer"}</p>
                                                     <p>{!acc.writable && "ReadOnly"}</p>
@@ -171,7 +194,8 @@ const TransactionDetails = () => {
                                     <div className="flex flex-col gap-5 w-full bg-white p-4 rounded-xl my-5">
                                         <h1 className='flex justify-start text-2xl font-semibold'>0{indx + 1} Undecoded Instruction</h1>
                                         <div className="flex justify-between w-full text-sm">
-                                            <p>Program	</p> <p className='font-black text-purple-950'>{ins.programId.name || ins.programId.address}</p>
+                                            <p>Program	</p> <p className='hidden md:block font-black text-purple-950'>{ins.programId.name || ins.programId.address}</p>
+                                            <p className='md:hidden font-black text-purple-950'>{(ins.programId.name || ins.programId.address).substring(0,20)}</p>
                                         </div>
                                         {ins.raw && ins.raw.data && <div className="flex justify-between w-full text-sm">
                                             <p>Data</p>
@@ -226,11 +250,11 @@ const TransactionDetails = () => {
                     <div>
                         <div className='flex flex-col gap-5 w-full bg-white p-4 rounded-xl my-5'>
                             <h1 className='flex justify-start text-2xl font-semibold'>Program Logs</h1>
-                            <div className="flex flex-col justify-start items-start p-2 w-full text-sm bg-gray-100 rounded-xl">
+                            <div className="flex flex-col overflow-auto justify-start items-start p-2 w-full text-sm bg-gray-100 rounded-xl">
 
                                 {transactionData && transactionData.meta ? transactionData.meta.logMessages.map((ins, indx) => {
                                     return (
-                                        <div className="flex text-xs justify-start w-full">
+                                        <div className="flex text-xs text-start w-full">
                                             {ins}
                                         </div>
 

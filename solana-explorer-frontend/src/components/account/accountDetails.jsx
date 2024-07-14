@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-import { FaArrowDown } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import '../../styles/loading.css';
 import '../../styles/transaction.css';
 
 const AccountDetails = () => {
@@ -122,15 +121,16 @@ const AccountDetails = () => {
 
                         {accountData && accountData.value ? (
                             <div className='flex flex-col gap-5 w-full' >
-                                <div className="flex justify-between w-full text-sm">
-                                    <p>Address</p> <p className='font-black text-purple-950'>{accountData.value.base.address.address}</p>
+                                {accountData.value.base && <div className="flex justify-between w-full text-sm">
+                                    <p>Address</p> <p className='hidden md:block font-black text-purple-950'>{accountData.value.base.address.address}</p>
+                                    <p className='md:hidden font-black text-purple-950'>{(accountData.value.base.address.address).substring(0, 15)}...</p>
 
-                                </div>
+                                </div>}
 
                                 <div className="flex justify-between w-full text-sm">
                                     <p>Owner Program</p> <p className='font-black text-purple-950'>{accountData.value.base.owner ? accountData.value.base.owner.name : "none"}</p>
                                 </div>
-                                <div className='grid grid-cols-2 w-full gap-4'>
+                                <div className='grid grid-cols-2 text-start w-full gap-4'>
                                     <div className="flex justify-between w-full text-sm">
                                         <p>Balance</p><p className='font-black text-purple-950'>{(accountData.value.base.balance)}</p>
                                     </div>
@@ -145,7 +145,16 @@ const AccountDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                        ) : <>Loading..</>}
+                        ) : <div className='flex w-full justify-center items-center'>
+                            <div className="spinner my-10">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>}
                     </div>
 
                     {accountData.type === 'vote' &&
@@ -199,7 +208,7 @@ const AccountDetails = () => {
 
 
 
-                    <div className='overflow-auto bg-white p-4 bg-opacity-50 rounded-xl mt-10'>
+                    <div className='overflow-auto bg-white p-1 md:p-4 bg-opacity-50 rounded-xl mt-2 md:mt-10'>
                         <div className=" mb-10 tab-container w-max">
                             <input onClick={() => setSelectedTab(1)} type="radio" name="tab" id="tab1" className="tab tab--1" />
                             <label className="tab_label" for="tab1">Transactions</label>
@@ -230,7 +239,7 @@ const AccountDetails = () => {
                                         <tr key={index} className='ml-4 py-2 border-b-[1px] w-full'>
                                             <td className="px-4 py-2">
                                                 <Link to={`/transactions/${txn.transactionHash}`} className='cursor-pointer text-blue-400'>
-                                                {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
+                                                    {(txn.transactionHash).substring(0, 10)}...{(txn.transactionHash).substring(74, txn.transactionHash.length)}
 
                                                 </Link>
                                             </td>

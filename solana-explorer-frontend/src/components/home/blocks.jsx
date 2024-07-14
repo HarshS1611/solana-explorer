@@ -92,8 +92,12 @@ const Blocks = () => {
                                 <td className='w-max'>
                                     <div>
                                         <div className="flex md:block gap-2 justify-start text-sky-600 ">
-                                            <Link to={`/validator/${transact.proposer}`} className='cursor-pointer'>
+                                            <Link to={`/validator/${transact.proposer}`} className='md:hidden cursor-pointer'>
                                                 {(transact.proposer).substring(0, 4)}...{(transact.proposer).substring(38, transact.proposer.length)}
+
+                                            </Link>
+                                            <Link to={`/validator/${transact.proposer}`} className='hidden md:block cursor-pointer'>
+                                                {(transact.proposer).substring(0, 10)}...{(transact.proposer).substring(30, transact.proposer.length)}
 
                                             </Link>
                                         </div>
