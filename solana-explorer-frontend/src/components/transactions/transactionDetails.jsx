@@ -157,9 +157,9 @@ const TransactionDetails = () => {
                                     </td>
                                     <td>
                                         {transactionData && transactionData.meta && transactionData.meta.preBalances && transactionData.meta.postBalances ? transactionData.meta.postBalances.slice(0, transactionData.accounts.length).map((acc, indx) => {
-                                            if ((acc - transactionData.meta.preBalances[indx]) > 0) {
-                                                setPayer(indx)
-                                            }
+                                            // if ((acc - transactionData.meta.preBalances[indx]) > 0) {
+                                            //     setPayer(indx)
+                                            // }
                                             return (
                                                 <div className="flex text-xs md:text-sm items-center gap-2">
                                                     <p>{((acc - transactionData.meta.preBalances[indx]) / 1e9)} SOL</p>
