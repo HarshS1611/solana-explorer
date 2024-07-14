@@ -13,6 +13,21 @@ This project involves designing and developing a Solana blockchain explorer that
 - Frontend: React+Vite, Tailwind
 - APIs: Solana Beach
 
+## Explorer Pages
+
+- **Home Page**
+  
+- **Transaction List:** *List of the transactions*
+  - **Transaction Details:** *Details of a transaction*
+    
+- **Block List:** *List of all the blocks*
+  - **Block Details:** *Details of a block*
+    
+- **Validator List:** *List of the transactions*
+  - **Validator Details:** *Details of a validator account*
+    
+- **Account Details:** *Details of a stake or standard account*
+
 ## Installation
 
 - ## Prerequisites
