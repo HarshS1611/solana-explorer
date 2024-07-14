@@ -36,7 +36,7 @@ const Navbar = () => {
                         <div className="text-sm md:text-md gap-2 md:gap-4 flex flex-col md:flex-row md:py-1">
                             <div className="flex gap-4 mt-2 text-lg font-lab-grotesque  cursor-pointer items-center lg:mt-2 md:mr-4 pb-2 "
 
-                            ><Link to={'/'} className='flex items-center gap-2 py-4'>
+                            ><Link to={'/'} className='flex items-center gap-2 py-2'>
                                     <img className='h-8 w-8' src='https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png' />
                                     <h1 className='hidden  text-2xl font-bold lg:block'>Solana Explorer</h1>
                                 </Link>

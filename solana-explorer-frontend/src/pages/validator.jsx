@@ -7,7 +7,7 @@ const AllValidators = () => {
     return (
         <div className="home overflow-hidden">
             <div >
-                <div className='lg:flex justify-center w-full items-center gap-10  mt-10'>
+                <div className='lg:flex justify-center w-full items-center gap-10  mt-20 md:mt-10'>
                     <div>
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button

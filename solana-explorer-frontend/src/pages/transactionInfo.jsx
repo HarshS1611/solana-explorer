@@ -7,7 +7,7 @@ const TransactionInfo = () => {
     return (
         <div className="home overflow-hidden">
             <div >
-                <div className='md:flex justify-center w-full items-center gap-8  mt-10'>
+                <div className='md:flex justify-center w-full items-center gap-8  mt-20 md:mt-10'>
                     <div>
                         <Link to={'/'} className='flex justify-start text-gray-200  w-full'>
                             <button

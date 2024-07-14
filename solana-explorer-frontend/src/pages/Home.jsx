@@ -11,7 +11,7 @@ export default function Home() {
 
     return (
         <div>
-            <div className='md:flex justify-center w-full items-center mt-10'>
+            <div className='md:flex justify-center w-full items-center mt-20 md:mt-10'>
                 <div className='flex text-start text-white text-3xl w-full  font-bold'>Explore Solana Blockchain
 
                 </div>
