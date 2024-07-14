@@ -55,6 +55,10 @@ const Transactions = () => {
 
         TransactionAPI();
 
+        setInterval(() => {
+            TransactionAPI()
+        }, 10000);
+
     }, []);
 
     return (

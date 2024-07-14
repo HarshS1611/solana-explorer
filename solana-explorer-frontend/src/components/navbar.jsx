@@ -20,10 +20,13 @@ const Navbar = () => {
         )
         console.log(response.data)
         setPrice(response.data[47].price)
-        setVolume(response.data[47].volume_24h/1e9)
+        setVolume(response.data[47].volume_24h / 1e9)
     }
     useEffect(() => {
         fetchPrice()
+        setInterval(() => {
+            fetchPrice();
+        }, 10000);
     }, []);
 
 
@@ -40,10 +43,10 @@ const Navbar = () => {
                                     <img className='h-8 w-8' src='https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png' />
                                     <h1 className='hidden  text-2xl font-bold lg:block'>Solana Explorer</h1>
                                 </Link>
-                               <div className='flex bg-gray-100 p-2 rounded-lg'>
-                               <p className='text-xs md:text-sm border-r-[1px] border-black pr-2 font-mono font-semibold text-green-800'> ${price && (price).toString().substring(0, 6)} </p>
-                               <p className='text-xs md:text-sm pl-2 font-mono'>Vol (24): {(volume).toString().substring(0,4)}B</p>
-                               </div>
+                                <div className='flex bg-gray-100 p-2 rounded-lg'>
+                                    <p className='text-xs md:text-sm border-r-[1px] border-black pr-2 font-mono font-semibold text-green-800'> ${price && (price).toString().substring(0, 6)} </p>
+                                    <p className='text-xs md:text-sm pl-2 font-mono'>Vol (24): {(volume).toString().substring(0, 4)}B</p>
+                                </div>
                             </div>
 
 

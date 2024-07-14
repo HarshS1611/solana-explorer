@@ -38,7 +38,6 @@ const Transactions = () => {
 
     const TransactionAPI = async (page) => {
 
-        console.log(page)
 
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/latest-transactions?limit=${20 * page}`,
             {
@@ -57,9 +56,9 @@ const Transactions = () => {
 
         TransactionAPI(currentPage);
 
+
     }, [currentPage]);
 
-    console.log(transactions, currentPage)
     return (
         <>
 

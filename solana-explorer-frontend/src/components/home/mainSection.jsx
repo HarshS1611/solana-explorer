@@ -81,6 +81,10 @@ function MainSection() {
     useEffect(() => {
         GetInfo();
 
+        setInterval(() => {
+            GetInfo();
+        }, 10000);
+
     }, []);
 
 
@@ -145,7 +149,7 @@ function MainSection() {
                     className="relative flex w-full px-6 flex-col text-md text-black items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white py-4 p-2"
                 >
                     <h1 className="flex text-start items-start font-bold w-full ">
-                        SOL Supply
+                        SOL Stake
                     </h1>
                     <p className='text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
                     <div className='flex flex-col justify-start w-full gap-2 mt-2 text-xs'>
