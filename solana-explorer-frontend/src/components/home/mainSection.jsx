@@ -116,14 +116,24 @@ function MainSection() {
                     <p className='text-sm lg:text-xl text-start w-full  font-nunito font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
                     <div className='flex justify-start w-full xl:gap-5 py-2'>
                         <div className='font-bold text-start w-full' >
-                            <h1 >
-                                Current Epoch
-                            </h1>
+                            <div >
+                                Current Epoch 
+                                <div className="tooltip">
+                                    <div class="icon">i</div>
+                                    <div class="tooltiptext text-start text-xs">Epoch Info<br />
+
+                                        Epoch start date: {new Date(generalInfo.epochInfo.epochStartTime * 1000).toLocaleString()}<br />
+                                        Slots in Epoch: {generalInfo.epochInfo.slotsInEpoch}</div>
+                                </div>
+                            </div>
                             <p className='text-sm lg:text-xl font-nunito font-black text-purple-600 '>{generalInfo && generalInfo.epoch}</p>
                         </div>
                         <div className='font-bold text-start w-full'>
                             <div className='text-md'>
-                                <p>Average TPS</p> <p className='text-sm lg:text-xl font-nunito font-black text-purple-600'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
+                                <div>Average TPS <div className="tooltip">
+                                    <div class="icon">i</div>
+                                    <div class="tooltiptext text-xs">Solana TPS excludes vote transactions</div>
+                                </div></div> <p className='text-sm lg:text-xl font-nunito font-black text-purple-600'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
                             </div>
 
 

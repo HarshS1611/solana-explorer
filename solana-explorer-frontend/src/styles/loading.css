@@ -153,9 +153,9 @@
   
   .tooltip .icon {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-color: #4caf50;
+    width: 15px;
+    height: 15px;
+    background-color: #3d3e3e;
     color: #fff;
     border-radius: 50%;
     text-align: center;

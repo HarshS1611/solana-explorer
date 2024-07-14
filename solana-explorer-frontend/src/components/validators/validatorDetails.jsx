@@ -151,7 +151,7 @@ const ValidatorDetails = () => {
                         <table className="table-auto bg-white rounded-t-xl w-full  ">
                             <thead>
                                 <tr className='border-b-[1px]'>
-                                    <th className="text-start px-10 py-2">STAKE ACCOUNT
+                                    <th className="text-start lg:text-center ml-10 px-10 py-2">STAKE ACCOUNT
                                     </th>
                                     <th className="flex justify-center px-4 py-2">ACTIVATION EPOCH	</th>
                                     <th className="px-4 py-2">AMOUNT</th>

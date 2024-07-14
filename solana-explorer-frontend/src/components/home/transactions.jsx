@@ -53,7 +53,7 @@ const Transactions = () => {
 
     useEffect(() => {
 
-            TransactionAPI();
+        TransactionAPI();
 
     }, []);
 
@@ -63,12 +63,21 @@ const Transactions = () => {
                 <thead className="rounded-lg border-b-[1px] w-full">
                     <tr className="   w-full">
                         <th className="flex text-start py-4 ml-5 text-xs md:text-sm">Latest Transactions</th>
-                 
+
 
                     </tr>
                     <tr className='text-xs md:text-sm'>
                         <th className='text-start pl-5 w-10 md:w-40'>TX HASH</th>
-                        <th>INSTRUCTIONS</th>
+                        <th>INSTRUCTIONS <div className="tooltip">
+                            <div class="icon text-xs">i</div>
+                            <div class="tooltiptext text-start text-xs"> Instructions are the smallest unit
+                                of a program that clients can
+                                include in a transaction. They are
+                                executed sequentially and atomically
+                                for each transaction, which can
+                                contain numerous instructions.</div>
+                        </div>
+                        </th>
                         <th className='flex justify-end w-10'>SLOT</th>
                         <th className=''>TIME</th>
                     </tr>
@@ -79,7 +88,7 @@ const Transactions = () => {
                         return (
                             <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-md md:px-4">
                                 <td className="flex py-4 w-max items-center flex-row gap-2 justify-start ml-5">
-                                    
+
                                     <div className='flex justify-start'>
                                         <Link to={`/transactions/${transact.transactionHash}`} className="lg:hidden  flex justify-start cursor-pointer text-sky-600">
 
@@ -109,13 +118,13 @@ const Transactions = () => {
                             </tr>)
                     }
                     ) : <div className="spinner my-10">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>}
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>}
 
 
                 </tbody>

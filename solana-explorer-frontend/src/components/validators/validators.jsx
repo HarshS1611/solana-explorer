@@ -83,24 +83,55 @@ const Validators = () => {
                     {generalInfo && validators ?
                         <div className='grid grid-cols-2 text-start lg:grid-cols-4 items-start gap-4 justify-center ml-5'>
                             <div>
-                                <p className='lg:text-xl font-bold'>Validators</p><p className='text-blue-500 text-xl lg:text-2xl font-bold mt-2'>{validators.length}</p><p className='text-xs'>Superminority: {generalInfo.superminority.nr}</p></div>
-                            <div><p className='lg:text-xl font-bold'>Weighted Skip Rate <p className='text-blue-500 text-xl lg:text-2xl mt-2'>{(generalInfo.skipRate.stakeWeightedSkipRate).toString().substring(0, 4)} %</p> </p><p className='text-xs'>Non-weighted: {((generalInfo.skipRate.skipRate - generalInfo.skipRate.stakeWeightedSkipRate) / generalInfo.skipRate.skipRate * 100).toString().substring(0, 4)} %</p>
+                                <p className='lg:text-xl font-bold'>Validators    <div className="tooltip">
+                                    <div class="icon">i</div>
+                                    <div class="tooltiptext text-start text-xs">This is the number of active validators
+                                        based on the networks activity in the past 24h</div>
+                                </div></p><p className='text-blue-500 text-xl lg:text-2xl font-bold mt-2'>{validators.length}</p><p className='text-xs'>Superminority: {generalInfo.superminority.nr}</p></div>
+                            <div><p className='lg:text-xl font-bold'>Weighted Skip Rate    <div className="tooltip">
+                                <div class="icon">i</div>
+                                <div class="tooltiptext text-start text-xs">If a validator fails to produce
+                                    an entry during their assigned time
+                                    window, this is considered a skip.
+                                    The skip rate refers to the share of
+                                    assigned leader slots that have not
+                                    been fulfilled by the respective
+                                    validator. The weighted skip rate
+                                    takes the validators's stake into
+                                    account.</div>
+                            </div><p className='text-blue-500 text-xl lg:text-2xl mt-2'>{(generalInfo.skipRate.stakeWeightedSkipRate).toString().substring(0, 4)} %</p> </p><p className='text-xs'>Non-weighted: {((generalInfo.skipRate.skipRate - generalInfo.skipRate.stakeWeightedSkipRate) / generalInfo.skipRate.skipRate * 100).toString().substring(0, 4)} %</p>
                             </div>
-                            <div><p className='lg:text-xl font-bold'>Nominal Staking APY <p className='text-blue-500 text-xl lg:text-2xl mt-2'>{(generalInfo.stakingYield).toString().substring(0, 4)} %</p></p>
+                            <div><p className='lg:text-xl font-bold'>Nominal Staking APY    <div className="tooltip">
+                                <div class="icon">i</div>
+                                <div class="tooltiptext text-start text-xs">This is the Annual Percentage
+                                    Yield earned by staking SOL.
+                                    It is based on the network's
+                                    performance i.t.o. actual slot
+                                    times during the past 24 hours.
+                                    Please note that this value does
+                                    not take validator commission
+                                    fees into account.</div>
+                            </div><p className='text-blue-500 text-xl lg:text-2xl mt-2'>{(generalInfo.stakingYield).toString().substring(0, 4)} %</p></p>
                             </div>
-                            <div><p className='lg:text-xl font-bold'>Node Versions <p className='text-blue-500 text-xl lg:text-2xl mt-2'>{generalInfo.stakeWeightedNodeVersions[0].version}</p></p><p className='text-xs'>others: {(generalInfo.stakeWeightedNodeVersions[1].value).toString().substring(0, 4)} %</p>
+                            <div><p className='lg:text-xl font-bold'>Node Versions    <div className="tooltip">
+                                <div class="icon">i</div>
+                                <div class="tooltiptext text-start text-xs">Distribution of node software
+                                    versions run by the validators on
+                                    Mainnet Beta.</div>
+                            </div><p className='text-blue-500 text-xl lg:text-2xl mt-2'>{generalInfo.stakeWeightedNodeVersions[0].version}</p></p><p className='text-xs'>others: {(generalInfo.stakeWeightedNodeVersions[1].value).toString().substring(0, 4)} %</p>
                             </div>
                         </div>
-                    : <div className='flex w-full justify-center items-center'>
-                    <div className="spinner my-10">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                </div>}
+
+                        : <div className='flex w-full justify-center items-center'>
+                            <div className="spinner my-10">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>}
                 </div>
 
                 <div className='overflow-auto bg-white lg:p-2 xl:p-4 bg-opacity-50 rounded-xl'>
