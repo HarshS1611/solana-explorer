@@ -146,12 +146,12 @@ function SearchComponent() {
                     >{searchResult ? (
                         <>
                             {searchType === 'address' && searchResult.value && (
-                                <a href={`/account/${searchResult.value.base.address.address}`} className="flex items-center cursor-pointer hover:bg-gray-100 justify-between px-4 z-30 w-full text-black mt-2 bg-white  rounded-md shadow">
+                                <a href={`/account/${searchResult.value.base.address.address || searchResult.value.base.address}`} className="flex items-center cursor-pointer hover:bg-gray-100 justify-between px-4 z-30 w-full text-black mt-2 bg-white  rounded-md shadow">
 
                                     <div className='flex justify-start  w-full  hover:bg-gray-100 py-5 bg-white rounded-md'>
                                         <div className='flex  gap-2 text-gray-500 text-sm'>
                                             <p className=' w-full'>Account </p>
-                                            <p className='font-bold '>{searchResult.value.base.address.address}</p>
+                                            <p className='font-bold '>{searchResult.value.base.address.address || searchResult.value.base.address}</p>
                                         </div></div><IoIosReturnLeft className='h-5 w-5' />
                                 </a>)}
                             {searchType === 'transaction' && searchResult.transactionHash && (

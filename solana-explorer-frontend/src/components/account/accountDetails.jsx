@@ -122,8 +122,8 @@ const AccountDetails = () => {
                         {accountData && accountData.value ? (
                             <div className='flex flex-col gap-5 w-full' >
                                 {accountData.value.base && <div className="flex justify-between w-full text-sm">
-                                    <p>Address</p> <p className='hidden md:block font-black text-purple-950'>{accountData.value.base.address.address}</p>
-                                    <p className='md:hidden font-black text-purple-950'>{(accountData.value.base.address.address).substring(0, 15)}...</p>
+                                    <p>Address</p> <p className='hidden md:block font-black text-purple-950'>{accountData.value.base.address.address || accountData.value.base.address}</p>
+                                    <p className='md:hidden font-black text-purple-950'>{(accountData.value.base.address.address || accountData.value.base.address).substring(0, 15)}...</p>
 
                                 </div>}
 

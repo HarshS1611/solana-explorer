@@ -26,7 +26,6 @@ function MainSection() {
             }
         )
         setGeneralInfo(generalInfo.data)
-        console.log(generalInfo.data)
 
         const response = await axios.get(`https://public-api.solanabeach.io/v1/market-chart-data?`,
             {
@@ -67,7 +66,6 @@ function MainSection() {
 
         const finalPrice = [["Time", "Price $"], ...pData];
         setPriceData(finalPrice);
-        console.log(finalPrice)
 
         setPriceOptions({
             chart: {
