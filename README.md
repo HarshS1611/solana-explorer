@@ -15,18 +15,22 @@ This project involves designing and developing an explorer  that fetches data fr
 
 ## Installation
 
-`## Prerequisites
-- Node.js (v14.x or later)
-- npm (v6.x or later) or yarn (v1.x or later)
-- Git`
+- ## Prerequisites
+  ```
+  Node.js (v14.x or later)
+  npm (v6.x or later) or yarn (v1.x or later)
+  Git
+  ```
 
-## Installation 
+- ## Installation 
 
-- `git clone https://github.com/yourusername/explorer-dashboard.git`
-- `cd explorer-dashboard`
-- `npm install`
-- `npm run dev`
-- 
+```
+ git clone https://github.com/yourusername/explorer-dashboard.git
+ cd explorer-dashboard
+ npm install
+ npm run dev
+```
+  
 ## Screenshots
 - Home Page
   ![image](https://github.com/user-attachments/assets/83e2d4c2-5121-43ec-9d10-79cd7cf853b3)
