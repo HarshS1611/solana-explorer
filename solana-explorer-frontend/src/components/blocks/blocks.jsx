@@ -69,7 +69,7 @@ const Blocks = () => {
                 <table class=" table-auto bg-white rounded-t-xl text-black w-full ">
                     <thead className="border-b-[1px] w-full">
                         <tr className="text-gray-400 w-fit">
-                            <th className="flex  py-2 w-fit justify-start text-xs md:text-md ml-5 ">Block Hash</th>
+                            <th className="flex  py-2 w-fit justify-start text-xs md:text-md ml-5 ">Transaction Hash</th>
                             <th className="text-xs md:text-md"> Block</th>
 
                             <th className="text-xs md:text-md">
