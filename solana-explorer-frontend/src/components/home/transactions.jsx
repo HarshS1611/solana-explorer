@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaExchangeAlt } from "react-icons/fa";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import '../../styles/loading.css'
 const Transactions = () => {
 
     const [transactions, setTransactions] = useState([]);
@@ -53,44 +53,37 @@ const Transactions = () => {
 
     useEffect(() => {
 
-        if (transactions.length <= 0) {
             TransactionAPI();
-        }
 
-
-
-
-    }, [transactions]);
+    }, []);
 
     return (
-        <div className='w-full bg-white p-4 bg-opacity-50 rounded-xl'>
+        <div className='w-full bg-white md:p-4 mt-5 lg:mt-0 bg-opacity-50 rounded-xl'>
             <table class="table-auto overflow-auto shadow-xl bg-white  rounded-lg text-black w-full ">
                 <thead className="rounded-lg border-b-[1px] w-full">
                     <tr className="   w-full">
-                        <th className="flex justify-start py-4 ml-5 text-sm">Latest Transactions</th>
+                        <th className="flex text-start py-4 ml-5 text-xs md:text-sm">Latest Transactions</th>
                  
 
                     </tr>
-                    <tr className='text-sm'>
-                        <th className='w-40'>TX HASH</th>
+                    <tr className='text-xs md:text-sm'>
+                        <th className='text-start md:text-center pl-5 w-10 md:pl-0 md:w-40'>TX HASH</th>
                         <th>INSTRUCTIONS</th>
                         <th className='flex justify-end w-10'>SLOT</th>
                         <th className=''>TIME</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {transactions && transactions.map((transact, index) => {
+                    {transactions ? transactions.map((transact, index) => {
                         // console.log(transact)
                         return (
                             <tr key={index} className="border-b-[0.7px] border-gray-400 text-xs md:text-md md:px-4">
                                 <td className="flex py-4 w-max items-center flex-row gap-2 justify-start ml-5">
-                                    <div className='flex items-center border-[1px] h-5 bg-black rounded-full'>
-                                        <FaExchangeAlt className=' h-5 w-5' />
-                                    </div>
+                                    
                                     <div className='flex justify-start'>
                                         <Link to={`/transactions/${transact.transactionHash}`} className="flex justify-start cursor-pointer text-sky-600">
 
-                                            {(transact.transactionHash).substring(0, 4)}...{(transact.transactionHash).substring(84, transact.transactionHash.length)}
+                                            {(transact.transactionHash).substring(0, 4)}...{(transact.transactionHash).substring(83, transact.transactionHash.length)}
                                         </Link>
 
                                     </div>
@@ -110,7 +103,14 @@ const Transactions = () => {
                                 </td>
                             </tr>)
                     }
-                    )}
+                    ) : <div className="spinner my-10">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>}
 
 
                 </tbody>

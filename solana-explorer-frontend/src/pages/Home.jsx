@@ -8,11 +8,11 @@ import Blocks from '../components/home/blocks'
 
 export default function Home() {
 
-    
+
     return (
         <div>
-            <div className='flex justify-center w-full items-center mt-10'>
-                <div className='flex justify-start text-3xl w-full text-white font-bold'>Explore Solana Blockchain
+            <div className='md:flex justify-center w-full items-center mt-10'>
+                <div className='flex text-start text-3xl w-full text-white font-bold'>Explore Solana Blockchain
 
                 </div>
                 <div className='w-full'>
@@ -21,12 +21,12 @@ export default function Home() {
 
             </div>
             <div>
-                <MainSection/>
+                <MainSection />
             </div>
-            <div className='flex gap-10 mt-10'>
-            <Blocks/>
-                <Transactions/>
-                
+            <div className='lg:flex gap-10 mt-10'>
+                <Blocks />
+                <Transactions />
+
             </div>
         </div>
     )

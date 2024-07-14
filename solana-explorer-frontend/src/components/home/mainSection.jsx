@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
 import '../../styles/transaction.css'
-
+import '../../styles/loading.css'
 import axios from 'axios';
 
 function MainSection() {
@@ -87,7 +87,7 @@ function MainSection() {
 
     return (
         <div className="flex flex-col gap-4 text-white">
-            <div className='grid grid-cols-3 gap-10'>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
                 <div
                     className="relative text-md flex flex-col items-center justify-start rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
                 >
@@ -95,13 +95,13 @@ function MainSection() {
                     <h1 className='text-start font-bold w-full'>
                         Total Supply (SOL)
                     </h1>
-                    <p className=' text-start w-full font-nunito text-xl font-black text-purple-600'>{generalInfo && generalInfo.activatedStake}</p>
-                    <div className='flex justify-start w-full gap-4 text-sm mt-5'>
+                    <p className=' text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'>{generalInfo && generalInfo.activatedStake}</p>
+                    <div className='xl:flex justify-start w-full gap-4 text-sm mt-2 xl:mt-5'>
                         <div>
-                            <p className='text-start w-full'>Current Stake</p> <p className='text-purple-600 font-semibold'>{generalInfo && (generalInfo.activatedStake - generalInfo.delinquentStake)}</p>
+                            <p className='text-start w-full'>Current Stake</p> <p className='text-purple-600 text-start font-semibold'>{generalInfo && (generalInfo.activatedStake - generalInfo.delinquentStake)}</p>
                         </div>
                         <div>
-                            <p className='text-start w-full'>Delinquent Stake</p><p className='text-purple-600 font-semibold'>{generalInfo && generalInfo.delinquentStake}</p> 
+                            <p className='text-start w-full'>Delinquent Stake</p><p className='text-purple-600 text-start font-semibold'>{generalInfo && generalInfo.delinquentStake}</p>
                         </div>
                     </div>
                 </div>
@@ -113,17 +113,17 @@ function MainSection() {
                     <h1 className="flex font-bold  text-start w-full justify-start">
                         Total Transactions
                     </h1>
-                    <p className='text-xl text-start w-full  font-nunito font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
-                    <div className='flex justify-start w-full gap-5 py-2'>
+                    <p className='text-sm lg:text-xl text-start w-full  font-nunito font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
+                    <div className='flex justify-start w-full xl:gap-5 py-2'>
                         <div className='font-bold text-start w-full' >
                             <h1 >
                                 Current Epoch
                             </h1>
-                            <p className='text-xl font-nunito font-black text-purple-600 '>{generalInfo && generalInfo.epoch}</p>
+                            <p className='text-sm lg:text-xl font-nunito font-black text-purple-600 '>{generalInfo && generalInfo.epoch}</p>
                         </div>
                         <div className='font-bold text-start w-full'>
                             <div className='text-md'>
-                                <p>Average TPS</p> <p className='text-xl font-nunito font-black text-purple-600'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
+                                <p>Average TPS</p> <p className='text-sm lg:text-xl font-nunito font-black text-purple-600'>{generalInfo && Math.ceil(generalInfo.avgTPS)} </p>
                             </div>
 
 
@@ -132,12 +132,12 @@ function MainSection() {
                 </div>
 
                 <div
-                    className="relative flex w-full px-6 flex-col text-md text-black items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-2"
+                    className="relative flex w-full px-6 flex-col text-md text-black items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white py-4 p-2"
                 >
                     <h1 className="flex text-start items-start font-bold w-full ">
                         SOL Supply
                     </h1>
-                    <p className='text-start w-full font-nunito text-xl font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
+                    <p className='text-start w-full font-nunito text-sm lg:text-xl font-black text-purple-600'>{generalInfo && generalInfo.totalSupply}</p>
                     <div className='flex flex-col justify-start w-full gap-2 mt-2 text-xs'>
                         <div>
                             <p className='text-start w-full'>Circulating Supply ({generalInfo && Math.round(generalInfo.circulatingSupply / generalInfo.totalSupply * 100)}%)</p> <p className='text-purple-600 font-semibold text-start'>{generalInfo && generalInfo.circulatingSupply}  </p>
@@ -156,7 +156,11 @@ function MainSection() {
             <div
                 className="relative flex flex-col items-center justify-center rounded-[1.5em] border-[1px] shadow-xl bg-white p-[1.5em] text-black"
             >
-                <div className="tab-container flex justify-start w-max">
+                
+
+
+                {generalInfo ? <>
+                    <div className="tab-container flex justify-start w-max">
                     <input type="radio" name="tab" id="tab1" className="tab tab--1" />
                     <label onClick={() => setSelectedTab(1)} className="tab_label text-black" for="tab1">Transaction Volume</label>
 
@@ -166,10 +170,7 @@ function MainSection() {
 
                     <div className="indicator"></div>
                 </div>
-
-
-                {generalInfo ? <>
-                    {selectedTab === 1 && generalInfo && volumeData && <Chart
+                    {selectedTab === 1 && volumeData && volumeData.length > 0 && <Chart
                         chartType="Bar"
                         width="100%"
                         height="400px"
@@ -178,7 +179,7 @@ function MainSection() {
                     />
                     }
 
-                    {selectedTab === 2 && generalInfo && priceData && (
+                    {selectedTab === 2 && priceData && priceData.length > 0 && (
                         <Chart
                             chartType="Line"
                             width="100%"
@@ -186,7 +187,17 @@ function MainSection() {
                             data={priceData}
                             options={priceOptions}
                         />
-                    )}</> : <p>Loading...</p>}
+                    )}</> : <div>
+                    <div className="spinner my-10">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>}
+
             </div>
 
         </div >
